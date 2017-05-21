@@ -97,27 +97,3 @@ paths:
 
 
 
-# define reusable parameters inside dce:
-parameters:
-  product_version_id:
-    name: product_version_id
-    in: path
-    description: Common product version ID
-    type: integer
-    required: true
-  code_filter:
-    in: query
-    name: code_filter
-    description: A collection of filter expressions for the code (denominator) of the coverage. The items will be ANDed together. Each item is of the form (property,operator,value). Operators can be =,>,>=,<,<=.
-    type: array
-    items:
-      type: string
-    collectionFormat: multi
-  code_group_attributes:
-    in: query
-    name: group_attributes
-    description: A list of code attributes by which the resulting coverage should be grouped.
-    type: array
-    items: 
-      type: string
-    collectionFormat: csv
