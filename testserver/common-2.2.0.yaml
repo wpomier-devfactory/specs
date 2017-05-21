@@ -1,86 +1,16 @@
 swagger: '2.0'
 
-# Dynamic Coverage Engine 1.0
+# TestServer Error Object definitions
 info:
   version: "2.2.0"
-  title: DCE Model 2.2.0
+  title: TestServer Global Parameters/Definitions/Responses
 
+# TestServer Global Model
+# -----------------------
 definitions:
-  GroupedCoverageSummary:
-    type: object
-    properties:
-      totalCoverage:
-        $ref: "#/definitions/CoverableObject"
-      groupCoverages:
-        type: array
-        items:
-          $ref: "#/definitions/GroupCoverageSummary"
-
-  GroupCoverageSummary:
-    type: object
-    properties:
-      group_attributes:
-        type: array
-        items: 
-          type: string
-      group_attribute_values:
-        type: array
-        items: 
-          type: string
-      coverage:
-        $ref: "#/definitions/CoverableObject"
-
-  TestRunCoverageBulk:
-    type: object
-    properties:
-      coverage:
-        $ref: "#/definitions/CoverableObject"
-      packages:
-        description: The top level packages in this TestRun. In a hierarchical representation it will just be the top level ones (e.g. "com")
-        type: array
-        items:
-          $ref: "#/definitions/PackageCoverageBulk"
-      sourceFiles:
-        type: array
-        items:
-          $ref: "#/definitions/SourceFileCoverage"
-
-  SourceFileCoverage:
-    type: object
-    properties:
-      sourceFileCoverageId:
-        type: integer
-        format: int32
-        description: An ID for this source file which is unique within this test run
-      dfScmUrl:
-        $ref: "global-2.2.0.yaml#/definitions/DfScmUrl"
-      totalLines:
-        type: integer
-        format: int32
-        description: Total number of lines in the file including comments and whitespace
-      coverableLines:
-        type: integer
-        format: int32
-        description: The number of lines in the file which resulted in executable code and therefore could be covered by a test
-      coveredLines:
-        type: integer
-        format: int32
-        description: The number of lines in the file which were covered by a test
-      perLineCoverage:
-        type: string
-        description: The coverage status of each line in the file represented by one character for each line - N = not coverable, X = coverable but not covered, C = (coverable and) covered, F = excluded by code filter (only used for some APIs)
-      codeAttributes:
-        type: object
-        description: Container for the values of the Code Attributes that were filtered on. Only present for APIs with a filter. If more than one value exists for the attribute on the file then the "largest" in the direction of the comparison operator will be used.
-        additionalProperties:
-          type: string
-          description: Code Attributes
-
-  AsyncQueryResponse:
-    type: object
-    properties:
-      queryId:
-        type: string
+  DfScmUrl:
+    type: string
+    description: The DF SCM URL of this revision of the source file as defined by CodeServer
 
   CoverageMetric:
     type: object
@@ -111,6 +41,52 @@ definitions:
         $ref: "#/definitions/CoverageMetric"
       methodCoverage:
         $ref: "#/definitions/CoverageMetric"
+
+  TestRunCoverageBulk:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      packages:
+        description: The top level packages in this TestRun. In a hierarchical representation it will just be the top level ones (e.g. "com")
+        type: array
+        items:
+          $ref: "#/definitions/PackageCoverageBulk"
+      sourceFiles:
+        type: array
+        items:
+          $ref: "#/definitions/SourceFileCoverage"
+
+  SourceFileCoverage:
+    type: object
+    properties:
+      sourceFileCoverageId:
+        type: integer
+        format: int32
+        description: An ID for this source file which is unique within this test run
+      dfScmUrl:
+        $ref: "#/definitions/DfScmUrl"
+      totalLines:
+        type: integer
+        format: int32
+        description: Total number of lines in the file including comments and whitespace
+      coverableLines:
+        type: integer
+        format: int32
+        description: The number of lines in the file which resulted in executable code and therefore could be covered by a test
+      coveredLines:
+        type: integer
+        format: int32
+        description: The number of lines in the file which were covered by a test
+      perLineCoverage:
+        type: string
+        description: The coverage status of each line in the file represented by one character for each line - N = not coverable, X = coverable but not covered, C = (coverable and) covered, F = excluded by code filter (only used for some APIs)
+      codeAttributes:
+        type: object
+        description: Container for the values of the Code Attributes that were filtered on. Only present for APIs with a filter. If more than one value exists for the attribute on the file then the "largest" in the direction of the comparison operator will be used.
+        additionalProperties:
+          type: string
+          description: Code Attributes
 
   PackageCoverageBulk:
     type: object
@@ -160,7 +136,7 @@ definitions:
     description: A section of source code
     properties:
       dfScmUrl:
-        $ref: "global-2.2.0.yaml#/definitions/DfScmUrl"
+        $ref: "#/definitions/DfScmUrl"
       startLine:
         type: integer
         description: if not present then the fragment starts at line 1
@@ -168,7 +144,28 @@ definitions:
         type: integer
         description: if not present then the fragment ends on at the end of the source file
 
-# define reusable parameters inside dce:
+  ErrorResponse:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: "#/definitions/Error"
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        description: A brief message describing the general nature of the error, for example Invalid Attribute
+        type: string
+      detail:
+        description: Detail specific to this occurrence of the error, e.g. Test Suite ID not valid.
+        type: string
+
+# TestServer Global Parameters
+# ----------------------------
 parameters:
   product_version_id:
     name: product_version_id
@@ -176,19 +173,15 @@ parameters:
     description: Common product version ID
     type: integer
     required: true
-  code_filter:
-    in: query
-    name: code_filter
-    description: A collection of filter expressions for the code (denominator) of the coverage. The items will be ANDed together. Each item is of the form (property,operator,value). Operators can be =,>,>=,<,<=.
-    type: array
-    items:
-      type: string
-    collectionFormat: multi
-  code_group_attributes:
-    in: query
-    name: group_attributes
-    description: A list of code attributes by which the resulting coverage should be grouped.
-    type: array
-    items: 
-      type: string
-    collectionFormat: csv
+
+# TestServer Global Responses
+# ---------------------------
+responses:
+  UnexpectedError:
+    description: Unexpected Error
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  BadRequest:
+    description: Bad Request
+    schema:
+      $ref: "#/definitions/ErrorResponse"

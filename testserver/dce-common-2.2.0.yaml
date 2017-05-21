@@ -1,0 +1,37 @@
+swagger: '2.0'
+
+# Dynamic Coverage Engine 1.0
+info:
+  version: "2.2.0"
+  title: DCE Model 2.2.0
+
+# DCE Common Model
+# ----------------
+definitions:
+  AsyncQueryResponse:
+    type: object
+    properties:
+      queryId:
+        type: string
+
+
+# DCE Common Parameters
+# ---------------------
+parameters:
+  code_filter:
+    in: query
+    name: code_filter
+    description: A collection of filter expressions for the code (denominator) of the coverage. The items will be ANDed together. Each item is of the form (property,operator,value). Operators can be =,>,>=,<,<=.
+    type: array
+    items:
+      type: string
+    collectionFormat: multi
+
+  code_group_attributes:
+    in: query
+    name: group_attributes
+    description: A list of code attributes by which the resulting coverage should be grouped.
+    type: array
+    items: 
+      type: string
+    collectionFormat: csv

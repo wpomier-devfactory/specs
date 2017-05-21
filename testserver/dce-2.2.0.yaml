@@ -1,6 +1,7 @@
 swagger: '2.0'
 
 # Dynamic Coverage Engine 1.0
+# ---------------------------
 info:
   version: "2.2.0"
   title: DevFactory TestServer v2 REST API
@@ -11,10 +12,12 @@ consumes:
 produces:
  - application/json
 
+# DCE APIs
+# --------
 paths:
   /productversions/{product_version_id}/coveragesummary/:
     parameters:
-      - $ref: "dce-common-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
@@ -25,7 +28,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "dce-model-2.2.0.yaml#/definitions/GroupedCoverageSummary"
+            $ref: "global-2.2.0.yaml#/definitions/GroupedCoverageSummary"
         400:
           description: Bad request
         404:
@@ -35,7 +38,7 @@ paths:
 
   /productversions/{product_version_id}/coveragemap/:
     parameters:
-      - $ref: "dce-common-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
@@ -55,7 +58,7 @@ paths:
 
   /productversions/{product_version_id}/asynccoveragemap/:
     parameters:
-      - $ref: "dce-common-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
@@ -75,7 +78,7 @@ paths:
 
   /productversions/{product_version_id}/sourcefilecoverage/:
     parameters:
-      - $ref: "dce-common-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
@@ -95,5 +98,30 @@ paths:
         default:
           $ref: "global-2.2.0.yaml#/responses/UnexpectedError"
 
+# DCE Model
+# ---------
+definitions:
+  GroupedCoverageSummary:
+    type: object
+    properties:
+      totalCoverage:
+        $ref: "#/definitions/CoverableObject"
+      groupCoverages:
+        type: array
+        items:
+          $ref: "#/definitions/GroupCoverageSummary"
 
+  GroupCoverageSummary:
+    type: object
+    properties:
+      group_attributes:
+        type: array
+        items: 
+          type: string
+      group_attribute_values:
+        type: array
+        items: 
+          type: string
+      coverage:
+        $ref: "#/definitions/CoverableObject"
 
