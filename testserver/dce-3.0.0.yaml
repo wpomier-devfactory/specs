@@ -28,7 +28,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "common-3.0.0.yaml#/definitions/GroupedCoverageSummary"
+            $ref: "#/definitions/GroupedCoverageSummary"
         400:
           description: Bad request
         404:
