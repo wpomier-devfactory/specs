@@ -160,7 +160,7 @@ definitions:
     description: A section of source code
     properties:
       dfScmUrl:
-        $ref: "#/definitions/DfScmUrl"
+        $ref: "https://wpomier-devfactory.github.io/specs/global-model-2.2.0.yaml#/definitions/DfScmUrl"
       startLine:
         type: integer
         description: if not present then the fragment starts at line 1
