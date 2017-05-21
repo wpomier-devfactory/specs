@@ -53,7 +53,7 @@ definitions:
         format: int32
         description: An ID for this source file which is unique within this test run
       dfScmUrl:
-        $ref: "https://wpomier-devfactory.github.io/specs/global-model-2.2.0.yaml#/definitions/DfScmUrl"
+        $ref: "global-2.2.0.yaml#/definitions/DfScmUrl"
       totalLines:
         type: integer
         format: int32
@@ -160,7 +160,7 @@ definitions:
     description: A section of source code
     properties:
       dfScmUrl:
-        $ref: "https://wpomier-devfactory.github.io/specs/global-model-2.2.0.yaml#/definitions/DfScmUrl"
+        $ref: "global-2.2.0.yaml#/definitions/DfScmUrl"
       startLine:
         type: integer
         description: if not present then the fragment starts at line 1
@@ -168,3 +168,27 @@ definitions:
         type: integer
         description: if not present then the fragment ends on at the end of the source file
 
+# define reusable parameters inside dce:
+parameters:
+  product_version_id:
+    name: product_version_id
+    in: path
+    description: Common product version ID
+    type: integer
+    required: true
+  code_filter:
+    in: query
+    name: code_filter
+    description: A collection of filter expressions for the code (denominator) of the coverage. The items will be ANDed together. Each item is of the form (property,operator,value). Operators can be =,>,>=,<,<=.
+    type: array
+    items:
+      type: string
+    collectionFormat: multi
+  code_group_attributes:
+    in: query
+    name: group_attributes
+    description: A list of code attributes by which the resulting coverage should be grouped.
+    type: array
+    items: 
+      type: string
+    collectionFormat: csv
