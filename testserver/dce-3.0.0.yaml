@@ -12,6 +12,12 @@ consumes:
 produces:
  - application/json
 
+tags:
+  - name: sync
+    description: Query Engine APIs
+  - name: async
+    description: Asynchronous Query Engine API
+
 # DCE APIs
 # --------
 paths:
@@ -20,6 +26,8 @@ paths:
       - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
+      tags:
+        - sync
       parameters:
         - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
         - $ref: "dce-common-3.0.0.yaml#/parameters/code_group_attributes"
@@ -41,6 +49,8 @@ paths:
       - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
+      tags:
+        - sync
       parameters:
         - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get a coverage map based on code filters. Packages will be hierarchical. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
@@ -61,6 +71,8 @@ paths:
       - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
+      tags:
+        - async
       parameters:
         - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get a coverage map based on code filters, returning a query ID which can be used to fetch the results incrementally
@@ -81,6 +93,8 @@ paths:
       - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
+      tags:
+        - sync
       parameters:
         - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get per-sourcefile coverage based on code filters. The SourceFileCoverage object will include a codeAttributes object for the attributes in the filter.
