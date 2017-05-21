@@ -164,8 +164,8 @@ responses:
   UnexpectedError:
     description: Unexpected Error
     schema:
-      $ref: "global-model-2.2.0.yaml#/definitions/ErrorResponse"
+      $ref: "https://wpomier-devfactory.github.io/specs/global-model-2.2.0.yaml#/definitions/ErrorResponse"
   BadRequest:
     description: Bad Request
     schema:
-      $ref: "global-model-2.2.0.yaml#/definitions/ErrorResponse"
+      $ref: "https://wpomier-devfactory.github.io/specs/global-model-2.2.0.yaml#/definitions/ErrorResponse"
