@@ -3,10 +3,10 @@ swagger: '2.0'
 # Dynamic Coverage Engine 1.0
 # ---------------------------
 info:
-  version: "2.2.0"
+  version: "3.0.0"
   title: DevFactory TestServer v2 REST API
 
-basePath: /ts/v2
+basePath: /ts-dce/v3.0
 consumes:
  - application/json
 produces:
@@ -17,72 +17,72 @@ produces:
 paths:
   /productversions/{product_version_id}/coveragesummary/:
     parameters:
-      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
-        - $ref: "dce-common-2.2.0.yaml#/parameters/code_filter"
-        - $ref: "dce-common-2.2.0.yaml#/parameters/code_group_attributes"
+        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
+        - $ref: "dce-common-3.0.0.yaml#/parameters/code_group_attributes"
       summary: Get a coverage summary based on code filters, optionally grouped by a set of code attributes.
       responses:
         200:
           description: OK
           schema:
-            $ref: "global-2.2.0.yaml#/definitions/GroupedCoverageSummary"
+            $ref: "common-3.0.0.yaml#/definitions/GroupedCoverageSummary"
         400:
           description: Bad request
         404:
           description: No coverage data for this product version
         default:
-          $ref: "global-2.2.0.yaml#/responses/UnexpectedError"
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
   /productversions/{product_version_id}/coveragemap/:
     parameters:
-      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
-        - $ref: "dce-common-2.2.0.yaml#/parameters/code_filter"
+        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get a coverage map based on code filters. Packages will be hierarchical. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
       responses:
         200:
           description: OK
           schema:
-            $ref: "dce-model-2.2.0.yaml#/definitions/TestRunCoverageBulk"
+            $ref: "common-3.0.0.yaml#/definitions/TestRunCoverageBulk"
         400:
           description: Bad request
         404:
           description: No coverage data for this product version
         default:
-          $ref: "global-2.2.0.yaml#/responses/UnexpectedError"
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
   /productversions/{product_version_id}/asynccoveragemap/:
     parameters:
-      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
-        - $ref: "dce-common-2.2.0.yaml#/parameters/code_filter"
+        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get a coverage map based on code filters, returning a query ID which can be used to fetch the results incrementally
       responses:
         200:
           description: OK
           schema:
-            $ref: "dce-model-2.2.0.yaml#/definitions/AsyncQueryResponse"
+            $ref: "dce-common-3.0.0.yaml#/definitions/AsyncQueryResponse"
         400:
           description: Bad request
         404:
           description: No coverage data for this product version
         default:
-          $ref: "global-2.2.0.yaml#/responses/UnexpectedError"
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
   /productversions/{product_version_id}/sourcefilecoverage/:
     parameters:
-      - $ref: "global-2.2.0.yaml#/parameters/product_version_id"
+      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       parameters:
-        - $ref: "dce-common-2.2.0.yaml#/parameters/code_filter"
+        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get per-sourcefile coverage based on code filters. The SourceFileCoverage object will include a codeAttributes object for the attributes in the filter.
       responses:
         200:
@@ -90,13 +90,13 @@ paths:
           schema:
             type: array
             items:
-              $ref: "dce-model-2.2.0.yaml#/definitions/SourceFileCoverage"
+              $ref: "common-3.0.0.yaml#/definitions/SourceFileCoverage"
         400:
           description: Bad request
         404:
           description: No coverage data for this product version
         default:
-          $ref: "global-2.2.0.yaml#/responses/UnexpectedError"
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
 # DCE Model
 # ---------
@@ -105,7 +105,7 @@ definitions:
     type: object
     properties:
       totalCoverage:
-        $ref: "#/definitions/CoverableObject"
+        $ref: "common-3.0.0.yaml#/definitions/CoverableObject"
       groupCoverages:
         type: array
         items:
@@ -123,5 +123,5 @@ definitions:
         items: 
           type: string
       coverage:
-        $ref: "#/definitions/CoverableObject"
+        $ref: "common-3.0.0.yaml#/definitions/CoverableObject"
 

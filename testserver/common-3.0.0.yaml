@@ -2,7 +2,7 @@ swagger: '2.0'
 
 # TestServer Error Object definitions
 info:
-  version: "2.2.0"
+  version: "3.0.0"
   title: TestServer Global Parameters/Definitions/Responses
 
 # TestServer Global Model

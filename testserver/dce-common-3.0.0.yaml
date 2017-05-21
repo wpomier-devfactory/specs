@@ -2,8 +2,8 @@ swagger: '2.0'
 
 # Dynamic Coverage Engine 1.0
 info:
-  version: "2.2.0"
-  title: DCE Model 2.2.0
+  version: "3.0.0"
+  title: DCE Commons 3.0.0
 
 # DCE Common Model
 # ----------------
