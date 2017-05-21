@@ -53,7 +53,7 @@ definitions:
         format: int32
         description: An ID for this source file which is unique within this test run
       dfScmUrl:
-        $ref: "#/definitions/DfScmUrl"
+        $ref: "https://wpomier-devfactory.github.io/specs/global-model-2.2.0.yaml#/definitions/DfScmUrl"
       totalLines:
         type: integer
         format: int32

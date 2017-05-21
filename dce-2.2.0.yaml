@@ -25,7 +25,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "dce-model-2.2.0.yaml#/definitions/GroupedCoverageSummary"
+            $ref: "https://wpomier-devfactory.github.io/specs/dce-model-2.2.0.yaml#/definitions/GroupedCoverageSummary"
         400:
           description: Bad request
         404:
@@ -45,7 +45,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "dce-model-2.2.0.yaml#/definitions/TestRunCoverageBulk"
+            $ref: "https://wpomier-devfactory.github.io/specs/dce-model-2.2.0.yaml#/definitions/TestRunCoverageBulk"
         400:
           description: Bad request
         404:
@@ -65,7 +65,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "dce-model-2.2.0.yaml#/definitions/AsyncQueryResponse"
+            $ref: "https://wpomier-devfactory.github.io/specs/dce-model-2.2.0.yaml#/definitions/AsyncQueryResponse"
         400:
           description: Bad request
         404:
@@ -87,7 +87,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "dce-model-2.2.0.yaml#/definitions/SourceFileCoverage"
+              $ref: "https://wpomier-devfactory.github.io/specs/dce-model-2.2.0.yaml#/definitions/SourceFileCoverage"
         400:
           description: Bad request
         404:
