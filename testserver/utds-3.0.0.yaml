@@ -481,7 +481,7 @@ paths:
        200:
          description: OK
          schema:
-           $ref: "#/definitions/TestRunCoverage"
+           $ref: "common-3.0.0.yaml#/definitions/TestRunCoverage"
        404:
          description: Could not find TestRun, or there is no Coverage data for this test run
        default:
@@ -511,7 +511,7 @@ paths:
          schema:
           type: array
           items:
-            $ref: "#/definitions/PackageCoverage"
+            $ref: "common-3.0.0.yaml#/definitions/PackageCoverage"
        404:
          description: Could not find Coverage for this test run and package (the TestRun does not exist, or it has no coverage, or it has coverage but the specified package does not exist)
        default:
@@ -541,7 +541,7 @@ paths:
          schema:
           type: array
           items:
-            $ref: "#/definitions/ClassCoverage"
+            $ref: "common-3.0.0.yaml#/definitions/ClassCoverage"
        404:
          description: Could not find Coverage for this test run and class (the TestRun does not exist, or it has no coverage, or it has coverage but the specified class does not exist)
          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
@@ -570,7 +570,7 @@ paths:
          schema:
           type: array
           items:
-            $ref: "#/definitions/MethodCoverage"
+            $ref: "common-3.0.0.yaml#/definitions/MethodCoverage"
        404:
          description: Could not find Coverage for this test run and method (the TestRun does not exist, or it has no coverage, or it has coverage but the specified method does not exist)
        default:
@@ -608,7 +608,7 @@ paths:
          schema:
           type: array
           items:
-            $ref: "#/definitions/SourceFileCoverage"
+            $ref: "common-3.0.0.yaml#/definitions/SourceFileCoverage"
        400:
          description: Parameters are not in the right format, or an invalid page was requested.
          $ref: "common-3.0.0.yaml#/responses/BadRequest"
@@ -1707,6 +1707,12 @@ definitions:
         description: Unstructured text describing where the test run was performed. The field is not queryable, it is for traceability/logging purposes. It should contain information such as the CI system type & instance.
         type: string
 
+  TestSuiteAndTestRunData:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestSuiteData"
+      - $ref: "#/definitions/TestRunBaseAttributes"
+
   TestRunData:
     type: object
     allOf:
@@ -1796,3 +1802,14 @@ definitions:
       message:
         description: Further information on why there is no data
         type: string
+
+# UTDS reusable parameters:
+# ------------------------
+parameters:
+  testrun_id:
+    name: testrun_id
+    in: path
+    description: Unique identifier for the Test Run
+    type: integer
+    format: int32
+    required: true
