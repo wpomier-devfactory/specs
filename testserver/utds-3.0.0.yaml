@@ -1803,6 +1803,99 @@ definitions:
         description: Further information on why there is no data
         type: string
 
+  TestInsightResultData:
+    type: object
+    properties:
+      appliesTo:
+        description: |
+          Which object this test insight result applies to, must be of the type specified on the insight's applicableTo
+        $ref: "#/definitions/TestInsightResultAppliesTo"
+      properties:
+        type: object
+        description: Container for the insight-specific properties
+        additionalProperties:
+          type: string
+          description: Insight specific key/value pairs. The keys for this map must be in the list of TestInsight.properties. The values must be strings.
+
+  TestInsightResult:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestInsightResultData"
+      - properties:
+          appId:
+            type: integer
+            format: int32
+            description: App ID as registered with CodeServer for the app that produces this insight
+          insightId:
+            type: integer
+            format: int32
+            description: Unique ID of this test insight
+          insightResultId:
+            type: integer
+            format: int32
+            description: Unique ID of this test insight result
+          created:
+            type: string
+            format: date-time
+            description: When the insight result was created
+          deleted:
+            type: string
+            format: date-time
+            description: When the insight result was (soft-) deleted.
+
+  TestInsightData:
+    type: object
+    properties:
+      appId:
+        type: integer
+        format: int32
+        description: App ID as registered with CodeServer for the app that produces this insight
+      name:
+        type: string
+        description: A name for the insight in dotted reverse domain format. For example testsourceanalyser.intent.pureunit. The exact format is for the application to define, however the recommended format is <appname>.<category>.<name>. This facilitates searches for insights from the same app or group of insights. The name should consist of only alphanumeric characters and dots.
+      version:
+        type: string
+        description: An app-specific version string. If an insight is deleted and recreated (e.g. to modify properties) with the same name then the version must be different.
+      displayName:
+        type: string
+        description: A human readable name for the insight
+        maxLength: 128
+      properties:
+        type: array
+        items:
+          type: string
+        description: A list of the custom properties that insight results may store. Each property's name may only contain alphanumeric characters and dots
+      applicableTo:
+        type: string
+        description: Which of the test-related entities the insight applies to
+        enum: [
+          "testSuite",
+          "testRun",
+          "testCase",
+          "testCaseExecution"
+          ]
+
+  TestInsight:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestInsightData"
+      - properties:
+          insightId:
+            type: integer
+            format: int32
+            description: Unique ID of this test insight
+          created:
+            type: string
+            format: date-time
+            description: When the insight was created
+          deleted:
+            type: string
+            format: date-time
+            description: When the insight was (soft-) deleted. The insight is still stored as it may have insight results associated with it, but it is no longer active and no new insight results can be stored against it.
+          isActive:
+            type: boolean
+            description: Whether the insight is currently active
+
 # UTDS reusable parameters:
 # ------------------------
 parameters:
