@@ -1682,3 +1682,59 @@ definitions:
             description: testRunId of the most recent TestRun in which this test csse executed
             type: integer
             format: int32
+
+  TestRunBaseAttributes:
+    type: object
+    properties:
+      scmRevision:
+        type: string
+      buildId:
+        description: Build ID unique within all test runs for this test suite
+        type: integer
+      executionStart:
+        description: datetime of start of test run
+        type: string
+        format: date-time
+      executionEnd:
+        description: datetime of end of test run
+        type: string
+        format: date-time
+      originDetails:
+        description: Unstructured text describing where the test run was performed. The field is not queryable, it is for traceability/logging purposes. It should contain information such as the CI system type & instance.
+        type: string
+
+  TestRunData:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestRunBaseAttributes"
+      - properties:
+          added:
+            description: datetime of when the test run data was added
+            type: string
+            format: date-time
+          testSuiteId:
+            $ref: "#/definitions/UniqueTestSuiteId"
+
+  TestRun:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestRunData"
+      - properties:
+          testRunId:
+            $ref: "#/definitions/UniqueTestRunId"
+          testSuiteId:
+            $ref: "#/definitions/UniqueTestSuiteId"
+          availableData:
+            $ref: "#/definitions/AvailableData"            
+
+  TestRuns:
+    type: object
+    properties:
+      mostRecentDataAvailable:
+        description: The max of the dataAvailableSince timestamps of the returned TestRuns for the requested required_data_types. This will be used for polling clients to base their next request on to ensure they only get new data. If no required_data_types were specified then it will be null. If no TestRuns were returned it will be the value of data_available_since query param or null if one was not specified.
+        type: string
+        format: date-time
+      testRuns:
+        type: array
+        items:
+          $ref: "#/definitions/TestRun"
