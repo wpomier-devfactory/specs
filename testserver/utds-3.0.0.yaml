@@ -1308,7 +1308,7 @@ paths:
             items:
               $ref: "#/definitions/TestInsight"
         400:
-          description: Parameters are not in the right format.
+          # Parameters are not in the right format.
           $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
@@ -1758,12 +1758,6 @@ definitions:
       originDetails:
         description: Unstructured text describing where the test run was performed. The field is not queryable, it is for traceability/logging purposes. It should contain information such as the CI system type & instance.
         type: string
-
-  TestSuiteAndTestRunData:
-    type: object
-    allOf:
-      - $ref: "#/definitions/TestSuiteData"
-      - $ref: "#/definitions/TestRunBaseAttributes"
 
   TestRunData:
     type: object
