@@ -1,0 +1,1621 @@
+swagger: '2.0'
+
+# Unit Test Data Store 1.0
+# ------------------------
+info:
+  version: "3.0.0"
+  title: Unit Test Data Store (aka CCS) APIs
+
+basePath: /ts-utds/v3.0
+consumes:
+ - application/json
+produces:
+ - application/json
+
+tags:
+  - name: testsuite
+    description: Test Suite APIs
+  - name: testrun
+    description: Test Run APIs
+  - name: coverage
+    description: Test Run Coverage APIs
+  - name: app
+    description: Code Insight APIs
+  - name: testcase
+    description: Test Case APIs
+  - name: submit
+    description: Submition APIs
+  - name: loader
+    description: Loaders APIs
+  - name: read
+    description: Read APIs
+  - name: write
+    description: Write APIs
+
+# UTDS APIs
+# ---------
+paths:
+  /health:
+    get:
+      description: |
+        Gets a `Health` object describing the state
+        of the system
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: Health
+            type: object
+            properties:
+              is_healthy:
+                type: boolean
+              user_message:
+                type: string
+                description: An (e.g. error) message suitable for display to end user.
+              internal_message:
+                type: string
+                description: Internal details to help diagnose any issues.
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testsuites:
+    post:
+      tags: testsuite
+      summary: Create a new Test Suite
+      description: |
+        `@specs CCS-1.1 M1`
+      parameters:
+        - in: body
+          name: body
+          description: Test Suite
+          required: true
+          schema:
+            $ref: "#/definitions/TestSuiteData"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestSuite"
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+    get:
+      tags:
+        - testsuite
+      summary: Find Test Suites
+      description: |
+        `@specs CCS-1.1 M1, CCS-1.3 M1`
+      parameters:
+        - in: query
+          name: scm_repo_url
+          description: URL of the SCM Repo as modeled in CodeServer
+          required: false
+          type: string
+        - in: query
+          name: scm_repo_id
+          description: CodeServer ID for the SCM Repo
+          required: false
+          type: integer
+        - in: query
+          name: product_version_id
+          description: DevFactory unique product version ID
+          required: false
+          type: integer      
+        - in: query
+          name: product_version_ids
+          description: A csv of DevFactory unique product version IDs
+          required: false
+          type: array
+          items:
+            type: integer
+            collectionFormat: csv
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestSuite"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testsuites/{testsuite_id}:
+    parameters:
+      - in: path
+        name: testsuite_id
+        required: true
+        type: integer
+    get:
+      tags:
+        - testsuite
+      summary: Get a Test Suite from its unique ID
+      description: |
+        `@specs CCS-1.1 M1`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestSuite"
+        404:
+          description: Not found if no TestSuite is found with that ID
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testsuites/{testsuite_id}/testcases:
+    parameters:
+      - in: path
+        name: testsuite_id
+        required: true
+        type: integer
+    get:
+      tags:
+        - testsuite
+        - testcase
+      summary: Find TestCases for a TestSuite
+      description: |
+        `@specs CCS-1.2 M1`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: fq_class
+          description: Fully qualified name of the test class
+          required: false
+          type: string
+        - in: query
+          name: name
+          description: Test case name (e.g. method name)
+          required: false
+          type: string
+        - in: query
+          name: executed_since
+          description: Return only test cases which have been executed since (>=) the specified time
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: executed_since_testrun_id
+          description: Return only test cases which have been executed since (>=) the specified test run id
+          required: false
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestCase"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: Not found if no TestSuite is found with that ID
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns:
+    post:
+      tags:
+        - testrun
+      summary: Create a Test Run
+      description: |
+        `@specs CCS-1.1 M1`
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/TestRunData"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestRun"
+        400:
+          description: 
+          $ref: "#/responses/BadRequest"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+    get:
+      tags:
+        - testrun
+      summary: Find Test Runs (paged API following usual paging scheme)
+      description: |
+        `@specs CCS-1.1 M1, CCS-1.2 M2, CCS-1.3 M1`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: test_suite_id
+          description: Test Suite ID the test run is for
+          required: false
+          type: integer
+        - in: query
+          name: test_suite_ids
+          description: A csv of Test Suite IDs that the Test Runs should be for
+          required: false
+          type: array
+          items:
+            type: integer
+            collectionFormat: csv
+        - in: query
+          name: test_run_ids
+          description: A csv of Test Run IDs to return
+          required: false
+          type: array
+          items:
+            type: integer
+            collectionFormat: csv
+        - in: query
+          name: scm_revision
+          required: false
+          type: string
+        - in: query
+          name: build_id
+          required: false
+          type: integer
+        - in: query
+          name: executed_since
+          description: Filter to test runs where execution started on or after the specified datetime
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: added_since
+          description: Filter to test runs which were added to the Unit Test Data Store strictly after the specified datetime
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: scm_repo_url
+          description: Filter to test runs for a test suite with this repo URL (exact match only, use CodeServer if you want to find repos based on wildcards)
+          required: false
+          type: string
+        - in: query
+          name: scm_repo_id
+          description: Filter to test runs for a test suite with this CodeServer repo ID
+          required: false
+          type: integer
+        - in: query
+          name: only_newest_per_test_suite
+          description: If true then return only the newest (most recent execution start time) test run for each test suite (subject to the other filters)
+          required: false
+          type: boolean
+        - in: query
+          name: required_data_type
+          description: Return only test runs which have all the specified data types available
+          type: array
+          items:
+            type: string
+            # NB: this should match #/definitions/DataType, but I can't
+            # get Swagger to accept a $ref here
+            enum: [
+              "coverage",
+              "testResults",
+              "perTestCoverage"
+            ]
+          collectionFormat: multi
+        - in: query
+          name: data_available_since
+          description: Return only test runs which have had the requested data available since this date-time. Has no effect if no required_data_types were specified. It is an error to specify a time in the future.
+          type: string
+          format: date-time
+        - in: query
+          name: insight_filter
+          description: A filter specifying an insight result that must exist and match for this test run. Multiple values of this param will be ANDed together. Each value should be of the form (insight.name,propertyname,=,expected_value). E.g. "(myapp.scores.somescore,thevalue,=,123)". For insights that are associated with objects other than the TestRun itself (e.g. with associated TestCaseExecutions) there must be at least one associated object of that type which has an insight result matching. Where there is more than one filter for the same type of object they will be considered independently. For example a TestRun would be included for filterA and filterB if a TestCaseExecution exists that matches filterA and a (could be a different) TestCaseExecution exists for filterB.
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            $ref: "#/definitions/TestRuns"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}:
+    parameters:
+      - in: path
+        name: testrun_id
+        type: integer
+        required: true
+    get:
+      tags:
+        - testrun
+      summary: Get a specific Test Run
+      description: |
+        `@specs CCS-1.1 M1`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestRun"
+        404:
+          description: No TestRun found with that ID
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/summary:
+    get:
+      tags:
+        - testrun
+      summary: Find Test Runs and return a summary of them. This is similar to GET /testruns, but returns summary data, as well as the basic test run information
+      description: |
+        `@specs CCS-1.3 M1`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: test_suite_ids
+          description: A csv of Test Suite IDs that the Test Runs should be for
+          required: false
+          type: array
+          items:
+            type: integer
+            collectionFormat: csv
+        - in: query
+          name: test_run_ids
+          description: A csv of Test Run IDs to return
+          required: false
+          type: array
+          items:
+            type: integer
+            collectionFormat: csv
+        - in: query
+          name: executed_since
+          description: Filter to test runs where execution started on or after the specified datetime
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: added_since
+          description: Filter to test runs which were added to the Unit Test Data Store strictly after the specified datetime
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: scm_repo_url
+          description: Filter to test runs for a test suite with this repo URL (exact match only, use CodeServer if you want to find repos based on wildcards)
+          required: false
+          type: string
+        - in: query
+          name: scm_repo_id
+          description: Filter to test runs for a test suite with this CodeServer repo ID
+          required: false
+          type: integer
+        - in: query
+          name: only_newest_per_test_suite
+          description: If true then return only the newest (most recent execution start time) test run for each test suite (subject to the other filters)
+          required: false
+          type: boolean
+        - in: query
+          name: required_data_type
+          description: Return only test runs which have all the specified data types available
+          type: array
+          items:
+            type: string
+            # NB: this should match #/definitions/DataType, but I can't
+            # get Swagger to accept a $ref here
+            enum: [
+              "coverage",
+              "testResults",
+              "perTestCoverage"
+            ]
+          collectionFormat: multi
+        - in: query
+          name: data_available_since
+          description: Return only test runs which have had the requested data available since this date-time. Has no effect if no required_data_types were specified. It is an error to specify a time in the future.
+          type: string
+          format: date-time
+        - in: query
+          name: insight_filter
+          description: A filter specifying an insight result that must exist and match for this test run. Multiple values of this param will be ANDed together. Each value should be of the form (insight.name,propertyname,=,expected_value). E.g. "(myapp.scores.somescore,thevalue,=,123)". For insights that are associated with objects other than the TestRun itself (e.g. with associated TestCaseExecutions) there must be at least one associated object of that type which has an insight result matching. Where there is more than one filter for the same type of object they will be considered independently. For example a TestRun would be included for filterA and filterB if a TestCaseExecution exists that matches filterA and a (could be a different) TestCaseExecution exists for filterB.
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestRunSummaryDataWithContext"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/getorcreate:
+    post:
+      tags:
+        - testrun
+      summary: Given details describing both Test Suite and Test Run, either find and return an existing test run ID, or create a new Test Run and/or Test Suite with those details.
+      description: |
+        `@specs CCS-1.1 M1`
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/TestSuiteAndTestRunData"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestRun"
+        400:
+          $ref: "#/responses/BadRequest"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    get:
+      tags:
+        - testrun
+        - coverage
+      summary: Top-level summary of coverage for a test run
+      description: |
+        `@specs CCS-1.1 M1`
+      responses:
+       200:
+         description: OK
+         schema:
+           $ref: "#/definitions/TestRunCoverage"
+       404:
+         description: Could not find TestRun, or there is no Coverage data for this test run
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/packages/{package_id}:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - name: package_id
+        in: path
+        description: Unique identifier for the package
+        type: integer
+        format: int32
+        required: true
+
+    get:
+      tags:
+        - testrun
+        - coverage
+      summary: Coverage of a package and a list of coverage for the classes it contains. In the current release packages will be flattened.
+      description: |
+        `@specs CCS-1.1 M1`
+      responses:
+       200:
+         description: OK
+         schema:
+          type: array
+          items:
+            $ref: "#/definitions/PackageCoverage"
+       404:
+         description: Could not find Coverage for this test run and package (the TestRun does not exist, or it has no coverage, or it has coverage but the specified package does not exist)
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/classes/{class_id}:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - name: class_id
+        in: path
+        description: Unique identifier for the class
+        type: integer
+        format: int32
+        required: true
+
+    get:
+      tags:
+        - testrun
+        - coverage
+      summary: Coverage of a class and a list of coverage for the methods it contains
+      description: |
+        `@specs CCS-1.1 M1`
+      responses:
+       200:
+         description: OK
+         schema:
+          type: array
+          items:
+            $ref: "#/definitions/ClassCoverage"
+       404:
+         description: Could not find Coverage for this test run and class (the TestRun does not exist, or it has no coverage, or it has coverage but the specified class does not exist)
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/methods/{method_id}:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - name: method_id
+        in: path
+        description: Unique identifier for the method
+        type: integer
+        format: int32
+        required: true
+
+    get:
+      tags:
+        - testrun
+        - coverage
+      summary: Coverage of a method
+      description: |
+        `@specs CCS-1.1 M1`
+      responses:
+       200:
+         description: OK
+         schema:
+          type: array
+          items:
+            $ref: "#/definitions/MethodCoverage"
+       404:
+         description: Could not find Coverage for this test run and method (the TestRun does not exist, or it has no coverage, or it has coverage but the specified method does not exist)
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/sourcefiles:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/paging_page"
+      - $ref: "#/parameters/paging_per_page"
+      - in: query
+        name: scm_path
+        description: The path of the file in the repo of this test run
+        required: false
+        type: string
+      - in: query
+        name: df_scm_url
+        description: The full DF SCM Url of the file
+        required: false
+        type: string
+  
+    get:
+      tags:
+        - testrun
+        - coverage
+      summary: List of source files for this test run.
+      description: |
+        List of source files for this test run which meet the query params, along with their coverage. This API supports pagination, following the model described at https://developer.github.com/guides/traversing-with-pagination
+
+        `@specs CCS-1.1 M1`
+      responses:
+       200:
+         description: OK. Array will be empty if there were no matches for the filter params.
+         schema:
+          type: array
+          items:
+            $ref: "#/definitions/SourceFileCoverage"
+       400:
+         description: Parameters are not in the right format, or an invalid page was requested.
+         $ref: "#/responses/BadRequest"
+       404:
+         description: Could not find TestRun, or there is no Coverage data for this test run
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/testresults:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    get:
+      tags:
+        - testrun
+      summary: Get the test results (Test Case Executions) for a given test run
+      description: |
+        `@specs CCS-1.2 M1`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+      responses:
+       200:
+         description: OK. Array will be empty if TestResult data exists for this TestRun, but there were no tests executed.
+         schema:
+            $ref: "#/definitions/TestRunResults"
+       400:
+         description: Parameters are not in the right format, or an invalid page was requested.
+         $ref: "#/responses/BadRequest"
+       404:
+         description: Could not find Test Results for this test run (either the TestRun does not exist, or no TestResult data is available for it)
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testcases/{testcase_id}/testresults:
+    parameters:
+      - in: path
+        name: testcase_id
+        required: true
+        type: integer
+    get:
+      tags:
+        - testcase
+      summary: Find TestCaseExecutions for a TestCase 
+      description: |
+        `@specs CCS-1.2 M1`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: executed_since
+          description: Return only executions in TestRuns executed since (>=) the specified time
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: executed_since_testrun_id
+          description: Return only executions in TestRuns executed since (>=) the specified test run id
+          required: false
+          type: integer
+          format: int32
+        - in: query
+          name: outcome
+          description: Return only test runs which had the specified outcomes (default is any outcome)
+          type: array
+          items:
+            type: string
+            enum: [
+              "success",
+              "failure",
+              "error",
+              "skipped"
+            ]
+          collectionFormat: multi
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            $ref: "#/definitions/TestRunResultsWithTestRun"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestCase not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+
+
+
+###### Coverage Submission Feed APIs ######
+
+  /testruns/{testrun_id}/coverage/jacoco:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    
+    post:
+      tags:
+        - testrun
+        - submit
+        - coverage
+        - loader
+      summary: Submit coverage for a test run based on Jacoco data
+      parameters:
+        - in: body
+          name: body
+          description: Jacoco coverage artifacts specification
+          required: true
+          schema:
+            $ref: "#/definitions/JacocoArtifactSpecification"
+      responses:
+        202:
+          description: Accepted
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/dotcover:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    
+    post:
+      tags:
+        - testrun
+        - coverage
+        - submit
+        - loader
+      summary: Submit coverage for a test run based on DotCover data
+      parameters:
+        - in: body
+          name: body
+          description: DotCover coverage artifacts specification
+          required: true
+          schema:
+            $ref: "#/definitions/DotCoverArtifactSpecification"
+      responses:
+        202:
+          description: Accepted
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+      
+  /testruns/{testrun_id}/coverage/opencover:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    
+    post:
+      tags:
+        - testrun
+        - coverage
+        - submit
+        - loader
+      summary: Submit coverage for a test run based on OpenCover data
+      parameters:
+        - in: body
+          name: body
+          description: OpenCover coverage artifacts specification
+          required: true
+          schema:
+            $ref: "#/definitions/OpenCoverArtifactSpecification"
+      responses:
+        202:
+          description: Accepted
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+
+  /testruns/{testrun_id}/testresults/xunit:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+
+    post:
+      tags:
+        - testrun
+        - coverage
+        - submit
+        - loader
+      summary: Submit Test Results for a test run based on XUnit data
+      description: |
+        `@specs CCS-1.2 M3`
+      parameters:
+        - in: body
+          name: body
+          description: XUnit test results artifacts specification
+          required: true
+          schema:
+            $ref: "#/definitions/XUnitArtifactSpecification"
+      responses:
+        202:
+          description: Accepted
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/cobertura:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+
+    post:
+      tags:
+        - testrun
+        - coverage
+        - submit
+        - loader
+      summary: Submit coverage for a test run based on Cobertura data
+      description: |
+        `@specs UTDS-1.5 M1`
+      parameters:
+        - in: body
+          name: body
+          description: Cobertura coverage artifacts specification
+          required: true
+          schema:
+            $ref: "#/definitions/CoberturaArtifactSpecification"
+      responses:
+        202:
+          description: Accepted
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ArtifactSubmissionStatus"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/nodata:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    
+    post:
+      tags:
+        - testrun
+        - loader
+        - submit
+      summary: Record that a type of data is not (and will not) be available for this test run
+      parameters:
+        - in: body
+          name: body
+          description: Detail of why there is no data
+          required: true
+          schema:
+            $ref: "#/definitions/NoDataAvailable"
+      responses:
+        200:
+          description: Success
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+
+
+  /testruns/{testrun_id}/submissions:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+
+    get:
+      tags:
+        - testrun
+        - submit
+      summary: Get all data submissions for a test run (list will be empty if there are none)
+      description: |
+        `@specs CCS-1.3 M1`
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SubmissionStatus"
+        400:
+          description: Bad Request
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+    post:
+      tags:
+        - testrun
+        - submit
+      summary: Start a new data submission for the specified types of data. Only those types of data will be able to be stored during the submission. Data will not be available to read APIs until the submission is completed. Once a submission for a given data type has been completed no further data of that type can be submitted.
+      description: |
+        `@specs ...`
+      parameters:
+        - in: body
+          name: body
+          description: Data Submission
+          required: true
+          schema:
+            $ref: "#/definitions/Submission"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/SubmissionStatus"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+      
+      
+  /testruns/{testrun_id}/submissions/{submission_id}:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+
+    get:
+      tags:
+        - testrun
+        - submit
+      summary: Get the current status of a data submission
+      description: |
+        `@specs ...`
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/SubmissionStatus"
+        400:
+          description: Bad Request
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/submissions/{submission_id}/coveragenodes:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+  
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Provide CoverageNode data for this Test Run as part of this submission
+      description: |
+        `@specs UTDS-1.4 M2`
+      parameters:
+        - in: body
+          name: body
+          description: Coverage Node Data
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CoverageNodeData"
+      responses:
+        200:
+          description: OK
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/submissions/{submission_id}/sourcefilecoverage:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+  
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Provide SourceFileCoverage data for this Test Run as part of this submission
+      parameters:
+        - in: body
+          name: body
+          description: Source File Coverage Data
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SourceFileCoverageData"
+      responses:
+        200:
+          description: OK
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/submissions/{submission_id}/sourcefragments:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+  
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Provide SourceFragment data for this Test Run as part of this submission
+      parameters:
+        - in: body
+          name: body
+          description: Source Fragment Data
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SourceFragmentData"
+      responses:
+        200:
+          description: OK
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/submissions/{submission_id}/testresults:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Add Test Case Executions to a test run data submission
+      description: |
+        `@specs CCS-1.2 M1`
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestCaseExecutionData"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestCaseExecution"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+      
+
+  /testruns/{testrun_id}/submissions/{submission_id}/progress:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+  
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Update the progress information for a submission which is in progress
+      parameters:
+        - in: body
+          name: body
+          description: Progress info
+          required: true
+          schema:
+            $ref: "#/definitions/SubmissionProgress"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/SubmissionStatus"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/submissions/{submission_id}/complete:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+  
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Complete (commit) the submission
+      description: |
+        `@specs UTDS-1.4 M2`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/SubmissionStatus"
+        400:
+          description: The request could not be completed, including if the data sent during the submission had integrity issues and failed validation, in which case the submission will be set to a failed status.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/submissions/{submission_id}/abort:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - $ref: "#/parameters/submission_id"
+  
+    post:
+      tags:
+        - testrun
+        - submit
+        - write
+      summary: Abort (roll back) the submission
+      description: |
+        `@specs CCS-1.3 M1`
+      parameters:
+        - in: body
+          name: body
+          description: A final indication of how far the submission had got and the reason for aborting
+          required: true
+          schema:
+            $ref: "#/definitions/SubmissionProgress"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/SubmissionStatus"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/coverage/submission/{artifact_submission_id}:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - in: path
+        name: artifact_submission_id
+        description: Unique ID for the artifact submission returned when the submission was made
+        required: true
+        type: string
+  
+    get:
+      tags:
+        - testrun
+        - submit
+      summary: Get the status of this artifact submission. Once this API has been called and returned a final status (SUCCESS or FAILURE) once then subsequent calls may return code 400. In addition after a reasonable period (e.g. 1 hour) from submission the call may return code 400.
+      responses:
+        200:
+          description: Success
+        400:
+         description: Bad Request
+        404:
+          description: TestRun or Artifact Submission not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /testruns/{testrun_id}/bulk:
+    parameters:
+      - in: path
+        name: testrun_id
+        type: integer
+        required: true
+      - in: query
+        name: include_data
+        description: Controls what data should be populated at the top level of the resulting structure. Keys for data not included will be missing from the result object. If no instances of this parameter are specified then the full data structure will be populated.
+        type: array
+        items:
+          type: string
+          enum: [
+            "test_run",
+            "coverage",
+            "test_results"
+          ]
+        collectionFormat: multi
+      - in: query
+        name: coverage_depth
+        description: Controls what level of coverage depth in the hierarchy testrun->package->class->method is populated in the resulting structure. The specified value is the last level that will be populated. Has no effect if include_data does not include coverage. Default is method (i.e. full hierarchy).
+        type: string
+        enum: [
+          "testrun",
+          "package",
+          "class",
+          "method"
+        ]
+      - in: query
+        name: coverage_source_files
+        description: Controls whether the source_files collection of the coverage data is present. Has no effect if include_data does not include coverage.
+        type: boolean
+        default: true
+      - in: query
+        name: coverage_source_fragments
+        description: Controls whether the sourceFragments collections are present for class and method coverage. Has no effect if class or method coverage is not included.
+        type: boolean    
+        default: true
+    get:
+      tags:
+        - testrun
+        - read
+      summary: Get bulk data for a specific Test Run. In the current release packages will be flattened.
+      description: |
+        `@specs CCS-1.2 M1, UTDS-1.4 M1`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestRunBulkData"
+        400:
+          description: Parameters are not in the right format.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun Not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /app/{app_id}/testinsights:
+    parameters:
+      - in: path
+        name: app_id
+        type: integer
+        format: int32
+        description: The app ID as registered with CodeServer
+        required: true
+        
+    get:
+      tags:
+        - app
+      summary: Find test insights that an app produces
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - in: query
+          name: effective_date
+          description: Find test insights which were active at this time rather than now
+          type: string
+          format: date-time
+          
+      responses:
+        200:
+          description: OK. Returns empty list if there are no insights found for the app (either the app id does not exist, or there are no insights for it)
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsight"
+        400:
+          description: Parameters are not in the right format.
+          $ref: "#/responses/BadRequest"
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+    post:
+      tags:
+        - app
+      summary: Register a new insight that this app can produce
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/TestInsightData"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestInsight"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: App Not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+          
+  /app/{app_id}/testinsights/{insight_id}:
+    parameters:
+      - in: path
+        name: app_id
+        type: integer
+        format: int32
+        description: The app ID as registered with CodeServer
+        required: true
+      - in: path
+        name: insight_id
+        type: integer
+        format: int32
+        required: true
+
+    get:
+      tags:
+        - app
+      summary: Get a test insight
+      description: |
+        `@specs CCS-1.2 M2`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TestInsight"
+        404:
+          description: App or Insight not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+      
+    delete:
+      tags:
+        - app
+      summary: End date this test insight to make it inactive. Existing insight results for it will still be available but new insight results will not be allowed.
+      description: |
+        `@specs CCS-1.2 M2`
+      responses:
+        200: 
+          description: OK
+          schema:
+            $ref: "#/definitions/TestInsight"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: App or Insight not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /app/{app_id}/testinsights/{insight_id}/results:
+    parameters:
+      - in: path
+        name: app_id
+        type: integer
+        format: int32
+        description: The app ID as registered with CodeServer
+        required: true
+      - in: path
+        name: insight_id
+        type: integer
+        format: int32
+        required: true
+
+    post:
+      tags:
+        - app
+      summary: Record new insight results for this insight
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsightResultData"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsightResult"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: App or Insight not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+            
+  /app/{app_id}/testinsights/{insight_id}/results/{insightresult_id}:
+    parameters:
+      - in: path
+        name: app_id
+        type: integer
+        format: int32
+        description: The app ID as registered with CodeServer
+        required: true
+      - in: path
+        name: insight_id
+        type: integer
+        format: int32
+        required: true
+      - in: path
+        name: insightresult_id
+        type: integer
+        format: int32
+        required: true
+
+    delete:
+      tags:
+        - app
+      summary: End date this test insight result to make it inactive.
+      description: |
+        `@specs CCS-1.2 M2`
+      responses:
+        200: 
+          description: OK
+          schema:
+            $ref: "#/definitions/TestInsightResult"
+        400:
+          $ref: "#/responses/BadRequest"
+        404:
+          description: App, Insight, or InsightResult not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testsuites/{testsuite_id}/testinsightresults:
+    parameters:
+      - in: path
+        name: testsuite_id
+        required: true
+        type: integer
+    get:
+      tags:
+        - app
+        - testsuite
+      summary: Find test insight results for a TestSuite (includes only active results, not deleted)
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: app_id
+          type: integer
+          format: int32
+        - in: query
+          name: insight_id
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsightResult"
+        404:
+          description: TestSuite Not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/testinsightresults:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+    get:
+      tags:
+        - app
+        - testrun
+      summary: Find test insight results for a TestRun (includes only active results, not deleted)
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: app_id
+          type: integer
+          format: int32
+        - in: query
+          name: insight_id
+          type: integer
+          format: int32
+        - in: query
+          name: indirect_association
+          type: boolean
+          default: false
+          description: Whether to include test insight results that relate indirectly to this TestRun, for example any associated with the TestSuite of this TestRun, with its TestCaseExecutions, or their TestCases
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsightResult"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: Not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testcases/{testcase_id}/testinsightresults:
+    parameters:
+      - in: path
+        name: testcase_id
+        required: true
+        type: integer
+    get:
+      tags:
+        - app
+        - testcase
+      summary: Find test insight results for a TestCase (includes only active results, not deleted)
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: app_id
+          type: integer
+          format: int32
+        - in: query
+          name: insight_id
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsightResult"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestCase not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /testruns/{testrun_id}/testcases/{testcase_id}/testinsightresults:
+    parameters:
+      - $ref: "#/parameters/testrun_id"
+      - in: path
+        name: testcase_id
+        required: true
+        type: integer
+    get:
+      tags:
+        - app
+        - testrun
+      summary: Find test insight results for a TestCaseExecution (includes only active results, not deleted)
+      description: |
+        `@specs CCS-1.2 M2`
+      parameters:
+        - $ref: "#/parameters/paging_page"
+        - $ref: "#/parameters/paging_per_page"
+        - in: query
+          name: app_id
+          type: integer
+          format: int32
+        - in: query
+          name: insight_id
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TestInsightResult"
+        400:
+          description: Parameters are not in the right format, or an invalid page was requested.
+          $ref: "#/responses/BadRequest"
+        404:
+          description: TestRun or TestCase not found, or TestCase was not executed for this TestRun
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
