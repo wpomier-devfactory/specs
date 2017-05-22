@@ -26,6 +26,8 @@ paths:
       tags:
         - async
       summary: Top-level summary of coverage from a query
+      description: |
+        `@specs DCE-1.0 M6` 
       responses:
        200:
          description: OK
@@ -50,6 +52,8 @@ paths:
       tags:
         - async
       summary: Coverage of a package and a list of coverage for the classes it contains. Packages will be hierarchical.
+      description: |
+        `@specs DCE-1.0 M6` 
       responses:
        200:
          description: OK
@@ -74,6 +78,8 @@ paths:
       tags:
         - async
       summary: Coverage of a class and a list of coverage for the methods it contains
+      description: |
+        `@specs DCE-1.0 M6` 
       responses:
        200:
          description: OK
@@ -98,6 +104,8 @@ paths:
       tags:
         - async
       summary: Coverage of a method
+      description: |
+        `@specs DCE-1.0 M6` 
       responses:
        200:
          description: OK
@@ -127,7 +135,10 @@ paths:
     get:
       tags:
         - async
-      summary: List of source files for this query result which meet the filter params, along with their coverage. This API supports pagination, following the model described at https://developer.github.com/guides/traversing-with-pagination/. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
+      summary: List of source files
+      description: |
+        List of source files for this query result which meet the filter params, along with their coverage. This API supports pagination, following the model described at https://developer.github.com/guides/traversing-with-pagination/. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
+        `@specs DCE-1.0 M6` 
       responses:
        200:
          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
