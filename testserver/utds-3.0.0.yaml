@@ -1743,6 +1743,14 @@ definitions:
         items:
           $ref: "#/definitions/TestRun"
 
+  DataType:
+    type: string
+    enum: [
+      "coverage",
+      "testResults",
+      "perTestCoverage"
+    ]
+
   DataTypeAvailability:
     type: object
     properties:
@@ -1770,3 +1778,21 @@ definitions:
      perTestCoverage:
        $ref: "#/definitions/DataTypeAvailability"
 
+  NoDataAvailable:
+    type: object
+    properties:
+      data_type:
+        $ref: "#/definitions/DataType"
+      reasonCode:
+        description: Reason there is no data
+        type: string
+        enum: [
+          "noSupportedDataFound",
+          "fatalProcessingError",
+          "processingTimedOut",
+          "manualIssueResolution",
+          "other"
+        ]
+      message:
+        description: Further information on why there is no data
+        type: string
