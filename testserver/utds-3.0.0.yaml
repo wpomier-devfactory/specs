@@ -1739,6 +1739,18 @@ definitions:
       - $ref: "#/definitions/TestCaseIdentity"
       - $ref: "#/definitions/TestCaseExecutionAttributes"
 
+  TestCaseExecutionWithTestRun:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestCaseExecution"
+      - properties:
+          testRunId:
+            $ref: "#/definitions/UniqueTestRunId"
+          testRunExecutionStart:
+            description: datetime of start of test run
+            type: string
+            format: date-time
+
   TestRunBaseAttributes:
     type: object
     properties:
@@ -2163,10 +2175,24 @@ definitions:
       testRun:
         $ref: "#/definitions/TestRun"
       coverage:
-        $ref: "#/definitions/TestRunCoverageBulk"
+        $ref: "common-3.0.0.yaml#/definitions/TestRunCoverageBulk"
       testResults:
         $ref: "#/definitions/TestRunResults"
 
+  TestRunResultsWithTestRun:
+      type: array
+      items:
+        $ref: "#/definitions/TestCaseExecutionWithTestRun"
+
+  TestRunSummaryDataWithContext:
+    type: object
+    allOf:
+      - $ref: "common-3.0.0.yaml#/definitions/TestRunSummaryData"
+      - properties:
+          testRun:
+            $ref: "#/definitions/TestRun"            
+          testSuite:
+            $ref: "#/definitions/TestSuite"            
 
 
 # UTDS reusable parameters:
