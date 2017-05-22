@@ -144,6 +144,50 @@ definitions:
         type: integer
         description: if not present then the fragment ends on at the end of the source file
 
+  TestRunCoverage:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      packages:
+        description: The top level packages in this TestRun. In a hierarchical representation it will just be the top level ones (e.g. "com")
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+
+  PackageCoverage:
+    type: object
+    properties:
+      parentPackage:
+        description: The parent of this package if the package representation is hierarchical. Null (or not present) if the package has no parent or if the package representation in use is flattened
+        type: integer
+        format: int32
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      classes:
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+      packages:
+        description: Only present for a hierarchical package representation when it will contain the immediate child packages of this package
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+
+  ClassCoverage:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      methods:
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+      sourceFragments:
+        type: array
+        items:
+          $ref: "#/definitions/SourceFragment"
+
   ErrorResponse:
     type: object
     properties:

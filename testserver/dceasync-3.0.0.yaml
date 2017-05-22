@@ -21,7 +21,7 @@ tags:
 paths:
   /queries/{query_id}/coverage:
     parameters:
-      - $ref: "dce-common-3.0.0.yaml#/parameters/query_id"
+      - $ref: "#/parameters/query_id"
     get:
       tags:
         - async
