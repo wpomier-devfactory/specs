@@ -116,7 +116,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: "dce-common-3.0.0.yaml#/definitions/AsyncQueryResponse"
+            $ref: "#/definitions/AsyncQueryResponse"
         400:
           description: Bad request
         404:
@@ -151,3 +151,8 @@ definitions:
       coverage:
         $ref: "common-3.0.0.yaml#/definitions/CoverableObject"
 
+  AsyncQueryResponse:
+    type: object
+    properties:
+      queryId:
+        type: string

@@ -7,12 +7,7 @@ info:
 
 # DCE Common Model
 # ----------------
-definitions:
-  AsyncQueryResponse:
-    type: object
-    properties:
-      queryId:
-        type: string
+# definitions:
 
 
 # DCE Common Parameters
