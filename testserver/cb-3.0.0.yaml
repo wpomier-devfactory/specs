@@ -58,7 +58,7 @@ paths:
             items:
               $ref: "#/definitions/SourceFileTestImpact"
         400:
-          description: Parameters are not in the right format, or an invalid page was requested.
+          # Parameters are not in the right format, or an invalid page was requested.
           $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: Product version or Revision Not found
