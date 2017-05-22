@@ -188,6 +188,25 @@ definitions:
         items:
           $ref: "#/definitions/SourceFragment"
 
+  TestRunSummaryData:
+    type: object
+    properties:
+      coverableLines:
+        type: integer
+        description: The total number of coverable lines of code for this test run
+      coveredLines:
+        type: integer
+        description: The total number of lines covered by this test run
+      totalLines:
+        type: integer
+        description: The total number of lines present in the source code for this test run
+      testCases:
+        type: integer
+        description: The total number of test cases present in this test run
+      failedTestCases:
+        type: integer
+        description: The number of test cases which failed in this test run
+
   ErrorResponse:
     type: object
     properties:
