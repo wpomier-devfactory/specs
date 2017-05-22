@@ -24,7 +24,11 @@ paths:
       - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
       - $ref: "#/parameters/rev"
     get:
+      tags:
+        - per-commit
       summary: Get a summary of the impact of this commit to test and coverage results
+      description: |     
+        `@specs CB 1.0 M??`
       responses:
         200:
           description: OK
@@ -40,6 +44,8 @@ paths:
       - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
       - $ref: "#/parameters/rev"
     get:
+      tags:
+        - per-commit
       parameters:
         - $ref: "common-3.0.0.yaml#/parameters/paging_page"
         - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
@@ -50,6 +56,8 @@ paths:
           type: string
       
       summary: Get a list of the impact to test results of this revision on source files
+      description: |
+        `@specs CB 1.0 M??`
       responses:
         200:
           description: OK. Array will be empty if there were no matches for the filter params.
