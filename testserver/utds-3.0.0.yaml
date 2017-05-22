@@ -2152,6 +2152,28 @@ definitions:
         format: int32
         description: The line number at which the section of code ends (inclusive)
 
+  TestSuiteAndTestRunData:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestSuiteData"
+      - $ref: "#/definitions/TestRunBaseAttributes"
+
+  TestRunResults:
+      type: array
+      items:
+        $ref: "#/definitions/TestCaseExecution"
+
+  TestRunBulkData:
+    type: object
+    properties:
+      testRun:
+        $ref: "#/definitions/TestRun"
+      coverage:
+        $ref: "#/definitions/TestRunCoverageBulk"
+      testResults:
+        $ref: "#/definitions/TestRunResults"
+
+
 
 # UTDS reusable parameters:
 # ------------------------
