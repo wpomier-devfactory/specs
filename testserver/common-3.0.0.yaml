@@ -207,6 +207,11 @@ definitions:
         type: integer
         description: The number of test cases which failed in this test run
 
+  ProductVersionId:
+    description: DevFactory unique ID for this product version
+    type: integer
+
+
   ErrorResponse:
     type: object
     properties:

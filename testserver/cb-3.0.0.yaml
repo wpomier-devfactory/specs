@@ -37,12 +37,12 @@ paths:
 
   /productversions/{product_version_id}/commits/{rev}/sourcefiletestimpacts/: 
     parameters:
-      - $ref: "#/parameters/product_version_id"
+      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
       - $ref: "#/parameters/rev"
     get:
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: scm_path
           description: The path of the file in the repo of this product version
@@ -115,3 +115,38 @@ definitions:
         type: integer
         description: The number of changed lines which were covered by the test run    
   
+  SourceFileTestImpact:
+    type: object
+    properties:
+      scmPath:
+        type: string
+        description: The path of the source file in the SCM repo
+      testRunIdForSourceFileCoverage:
+        type: integer
+        format: int32
+        description: The ID of the TestRun for which sourceFileCoverageId applies
+      sourceFileCoverageId:
+        type: integer
+        format: int32
+        description: The ID of the source file coverage information used to assess this file (which must be from a test run at the same revision, otherwise line numbers will not be in sync). In particular this will include per-line coverage for the file, showing which lines were coverable and covered.
+      totalChangedLines:
+        type: integer
+        description: The number of lines changed in the file as attributed to this revision (may not match an SCM diff for the file, for example in the case of the impact of other commits being included in the evaluation of this one)
+      coverableChangedLines:
+        type: integer
+        description: The number of changed lines which were coverable
+      coveredChangedLines:
+        type: integer
+        description: The number of changed lines which were covered
+      changedLineMask:
+        type: string
+        description: A string of 0s and 1s with one character per line of the file, with 1s indicating lines which were changed.
+      
+
+parameters:
+  rev:
+    name: rev
+    in: path
+    description: SCM revision as seen in the SCM system (e.g. git hash)
+    type: string
+    required: true
