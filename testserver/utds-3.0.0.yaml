@@ -1733,6 +1733,12 @@ definitions:
       - $ref: "#/definitions/TestCaseIdentityData"
       - $ref: "#/definitions/TestCaseExecutionAttributes"
 
+  TestCaseExecution:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestCaseIdentity"
+      - $ref: "#/definitions/TestCaseExecutionAttributes"
+
   TestRunBaseAttributes:
     type: object
     properties:
@@ -2006,6 +2012,146 @@ definitions:
           updated:
             type: string
             format: date-time
+
+  JacocoArtifactSpecification:
+    type: object
+    properties:
+      jacocoExecFilesUris:
+        description: List of URIs of Jacoco exec files
+        type: array
+        items: 
+          type: string
+      classPathUris:
+        description: List of URIs (e.g. of zips) of build class files
+        type: array
+        items: 
+          type: string
+      sourceFileToDfScmUrlMappingUri:
+        description: URI of a file mapping source file name + package to a DfScmUrl
+        type: string
+
+  OpenCoverArtifactSpecification:
+    type: object
+    properties:
+      openCoverXmlUris:
+        description: List of URIs of OpenCover XML files
+        type: array
+        items: 
+          type: string
+      sourceFileToDfScmUrlMappingUri:
+        description: URI of a file mapping source file full path to a DfScmUrl
+        type: string
+
+  DotCoverArtifactSpecification:
+    type: object
+    properties:
+      dotCoverXmlUris:
+        description: List of URIs of DotCover XML files
+        type: array
+        items: 
+          type: string
+      sourceFileToDfScmUrlMappingUri:
+        description: URI of a file mapping source file full path to a DfScmUrl
+        type: string
+
+  XUnitArtifactSpecification:
+    type: object
+    properties:
+      xunitXmlUris:
+        description: List of URIs of XUnit XML files
+        type: array
+        items: 
+          type: string
+
+  CoberturaArtifactSpecification:
+    type: object
+    properties:
+      coberturaXmlUris:
+        description: List of URIs of Cobertura XML files
+        type: array
+        items: 
+          type: string
+      sourceFileToDfScmUrlMappingUri:
+        description: URI of a file mapping source file full path to a DfScmUrl
+        type: string
+
+  CoverageNodeData:
+    type: object
+    required:
+      - coverageNodeId
+      - type
+      - name
+    properties:
+      coverageNodeId:
+        type: integer
+        format: int32
+        description: A unique ID for this coverage node within this test run (allocated by the submitter)
+      parentId:
+        type: integer
+        format: int32
+        description: |
+          The coverageNodeId of the parent node in the coverage hierarchy. The parent node must be included in the same or an earlier coveragenodes submission. The parent must be of the correct type given the type of this node: 
+          * testRun node should have no parent (omit the parentId property)
+          * package node must have parent of type testRun or type package
+          * class node must have parent of type package
+          * method node must have parent of type class
+          There must be only one node of type testRun for the entire TestRun
+      type:
+        type: string
+        enum: [
+          "testRun",
+          "package",
+          "class",
+          "method"
+          ]
+        description: The type of node being submitted.
+      name:
+        type: string
+        description: The human readable name of this node. This will, for example, be displayed as the caption for a heatmap rectangle representing this code element. The names of children should be unique within a given parent, so for example if there are two methods in a class with the same name it is the responsibility of the caller to make them unique.
+
+  SourceFileCoverageData:
+    type: object
+    required:
+      - sourceFileCoverageId
+      - scmPath
+      - perLineCoverage
+    properties:
+      sourceFileCoverageId:
+        type: integer
+        format: int32
+        description: A unique ID for this source file within this test run (allocated by the submitter)
+      scmPath:
+        type: string
+        description: The path of the source file within the SCM repo (which is specified on the TestSuite to which this TestRun belongs). Should be as it would appear in the scmPath parameter of a DFSCMURL
+      perLineCoverage:
+        type: string
+        description: The coverage status of each line in the file represented by one character for each line - N = not coverable, X = coverable but not covered, C = (coverable and) covered
+
+  SourceFragmentData:
+    type: object
+    required:
+      - sourceFileCoverageId
+      - coverageNodeId
+      - startLine
+      - endLine
+    properties:
+      sourceFileCoverageId:
+        type: integer
+        format: int32
+        description: The unique ID (within this TestRun) of the source file (SourceFileCoverageData) containing the lines of this source fragment. The SourceFileCoverageData for this ID should have already been loaded as part of this submission.
+      coverageNodeId:
+        type: integer
+        format: int32
+        description: The unique ID of the CoverageNode which contains the referenced code
+      startLine:
+        type: integer
+        format: int32
+        description: The line number (1-based) at which the section of code starts
+      endLine:
+        type: integer
+        format: int32
+        description: The line number at which the section of code ends (inclusive)
+
 
 # UTDS reusable parameters:
 # ------------------------
