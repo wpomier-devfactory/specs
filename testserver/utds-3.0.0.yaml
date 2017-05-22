@@ -61,7 +61,8 @@ paths:
 
   /testsuites:
     post:
-      tags: testsuite
+      tags: 
+        - testsuite
       summary: Create a new Test Suite
       description: |
         `@specs CCS-1.1 M1`
@@ -78,7 +79,7 @@ paths:
           schema:
             $ref: "#/definitions/TestSuite"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
@@ -160,8 +161,8 @@ paths:
       description: |
         `@specs CCS-1.2 M1`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: fq_class
           description: Fully qualified name of the test class
@@ -193,7 +194,7 @@ paths:
               $ref: "#/definitions/TestCase"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: Not found if no TestSuite is found with that ID
         default:
@@ -220,7 +221,7 @@ paths:
             $ref: "#/definitions/TestRun"
         400:
           description: 
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
@@ -231,8 +232,8 @@ paths:
       description: |
         `@specs CCS-1.1 M1, CCS-1.2 M2, CCS-1.3 M1`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: test_suite_id
           description: Test Suite ID the test run is for
@@ -323,7 +324,7 @@ paths:
             $ref: "#/definitions/TestRuns"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
@@ -357,8 +358,8 @@ paths:
       description: |
         `@specs CCS-1.3 M1`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: test_suite_ids
           description: A csv of Test Suite IDs that the Test Runs should be for
@@ -438,7 +439,7 @@ paths:
               $ref: "#/definitions/TestRunSummaryDataWithContext"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
@@ -461,7 +462,7 @@ paths:
           schema:
             $ref: "#/definitions/TestRun"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
@@ -579,8 +580,8 @@ paths:
   /testruns/{testrun_id}/coverage/sourcefiles:
     parameters:
       - $ref: "#/parameters/testrun_id"
-      - $ref: "#/parameters/paging_page"
-      - $ref: "#/parameters/paging_per_page"
+      - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+      - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
       - in: query
         name: scm_path
         description: The path of the file in the repo of this test run
@@ -610,7 +611,7 @@ paths:
             $ref: "#/definitions/SourceFileCoverage"
        400:
          description: Parameters are not in the right format, or an invalid page was requested.
-         $ref: "#/responses/BadRequest"
+         $ref: "common-3.0.0.yaml#/responses/BadRequest"
        404:
          description: Could not find TestRun, or there is no Coverage data for this test run
        default:
@@ -627,8 +628,8 @@ paths:
       description: |
         `@specs CCS-1.2 M1`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
       responses:
        200:
          description: OK. Array will be empty if TestResult data exists for this TestRun, but there were no tests executed.
@@ -636,7 +637,7 @@ paths:
             $ref: "#/definitions/TestRunResults"
        400:
          description: Parameters are not in the right format, or an invalid page was requested.
-         $ref: "#/responses/BadRequest"
+         $ref: "common-3.0.0.yaml#/responses/BadRequest"
        404:
          description: Could not find Test Results for this test run (either the TestRun does not exist, or no TestResult data is available for it)
        default:
@@ -655,8 +656,8 @@ paths:
       description: |
         `@specs CCS-1.2 M1`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: executed_since
           description: Return only executions in TestRuns executed since (>=) the specified time
@@ -689,7 +690,7 @@ paths:
             $ref: "#/definitions/TestRunResultsWithTestRun"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestCase not found
         default:
@@ -891,7 +892,7 @@ paths:
         200:
           description: Success
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun not found
         default:
@@ -945,7 +946,7 @@ paths:
           schema:
             $ref: "#/definitions/SubmissionStatus"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun not found
         default:
@@ -1003,7 +1004,7 @@ paths:
         200:
           description: OK
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1033,7 +1034,7 @@ paths:
         200:
           description: OK
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1063,7 +1064,7 @@ paths:
         200:
           description: OK
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1097,7 +1098,7 @@ paths:
             items:
               $ref: "#/definitions/TestCaseExecution"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1128,7 +1129,7 @@ paths:
           schema:
             $ref: "#/definitions/SubmissionStatus"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1154,7 +1155,7 @@ paths:
             $ref: "#/definitions/SubmissionStatus"
         400:
           description: The request could not be completed, including if the data sent during the submission had integrity issues and failed validation, in which case the submission will be set to a failed status.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1186,7 +1187,7 @@ paths:
           schema:
             $ref: "#/definitions/SubmissionStatus"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or Submission not found
         default:
@@ -1270,7 +1271,7 @@ paths:
             $ref: "#/definitions/TestRunBulkData"
         400:
           description: Parameters are not in the right format.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun Not found
         default:
@@ -1308,7 +1309,7 @@ paths:
               $ref: "#/definitions/TestInsight"
         400:
           description: Parameters are not in the right format.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
@@ -1330,7 +1331,7 @@ paths:
           schema:
             $ref: "#/definitions/TestInsight"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: App Not found
         default:
@@ -1378,7 +1379,7 @@ paths:
           schema:
             $ref: "#/definitions/TestInsight"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: App or Insight not found
         default:
@@ -1420,7 +1421,7 @@ paths:
             items:
               $ref: "#/definitions/TestInsightResult"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: App or Insight not found
         default:
@@ -1457,7 +1458,7 @@ paths:
           schema:
             $ref: "#/definitions/TestInsightResult"
         400:
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: App, Insight, or InsightResult not found
         default:
@@ -1477,8 +1478,8 @@ paths:
       description: |
         `@specs CCS-1.2 M2`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: app_id
           type: integer
@@ -1510,8 +1511,8 @@ paths:
       description: |
         `@specs CCS-1.2 M2`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: app_id
           type: integer
@@ -1534,7 +1535,7 @@ paths:
               $ref: "#/definitions/TestInsightResult"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: Not found
         default:
@@ -1554,8 +1555,8 @@ paths:
       description: |
         `@specs CCS-1.2 M2`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: app_id
           type: integer
@@ -1573,7 +1574,7 @@ paths:
               $ref: "#/definitions/TestInsightResult"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestCase not found
         default:
@@ -1594,8 +1595,8 @@ paths:
       description: |
         `@specs CCS-1.2 M2`
       parameters:
-        - $ref: "#/parameters/paging_page"
-        - $ref: "#/parameters/paging_per_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: app_id
           type: integer
@@ -1613,9 +1614,71 @@ paths:
               $ref: "#/definitions/TestInsightResult"
         400:
           description: Parameters are not in the right format, or an invalid page was requested.
-          $ref: "#/responses/BadRequest"
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
         404:
           description: TestRun or TestCase not found, or TestCase was not executed for this TestRun
         default:
           $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
 
+# UTDS model
+# ----------
+definitions:
+
+  TestSuiteData:
+    type: object
+    properties:
+      productVersionId:
+        $ref: "common-3.0.0.yaml#/definitions/ProductVersionId"
+      scmRepoUrl:
+        description: SCM Repo URL including branch, as modeled by CodeServer
+        type: string
+      scmRepoId:
+        description: CodeServer's unique ID for the SCM Repo
+        type: integer
+
+  TestSuite:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestSuiteData"
+      - properties:
+          testSuiteId:
+            $ref: "#/definitions/UniqueTestSuiteId"
+
+  UniqueTestSuiteId:
+    type: integer
+    format: int32
+
+  TestCaseIdentityData:
+    type: object
+    description: A combination of human-readable fields that uniquely identify the test case within a particular TestSuite (or TestRun). For data submission, if the same test class & name occurs more than once in a single TestRun it it the responsibility of the caller to adjust the name (e.g. a suffix) to ensure it is unique. This is because the caller has any additional context that helps to interpret the difference between the executions (such being in different JUnit Suites, or being different parameterised runs).
+    properties:
+      fqTestClass:
+        type: string
+      testCaseName:
+        type: string
+
+  TestCaseIdentity:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestCaseIdentityData"
+      - properties:
+          testCaseId:
+            type: integer
+            format: int32
+    
+  TestCase:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestCaseIdentity"
+      - properties:
+          testSuiteId:
+            type: integer
+            format: int32
+          lastTestRunStart:
+            description: The start time of the most recent TestRun in which this test case executed
+            type: string
+            format: date-time
+          lastTestRunId:
+            description: testRunId of the most recent TestRun in which this test csse executed
+            type: integer
+            format: int32
