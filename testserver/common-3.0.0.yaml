@@ -173,6 +173,18 @@ parameters:
     description: Common product version ID
     type: integer
     required: true
+  paging_page:
+    name: page
+    in: query
+    description: page number for an API that supports pagination
+    type: integer
+    format: int32
+  paging_per_page:
+    name: per_page
+    in: query
+    description: number of items on a page for an API that supports pagination
+    type: integer
+    format: int32
 
 # TestServer Global Responses
 # ---------------------------
