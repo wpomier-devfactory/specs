@@ -1648,6 +1648,10 @@ definitions:
     type: integer
     format: int32
 
+  UniqueTestRunId:
+    type: integer
+    format: int32
+
   TestCaseIdentityData:
     type: object
     description: A combination of human-readable fields that uniquely identify the test case within a particular TestSuite (or TestRun). For data submission, if the same test class & name occurs more than once in a single TestRun it it the responsibility of the caller to adjust the name (e.g. a suffix) to ensure it is unique. This is because the caller has any additional context that helps to interpret the difference between the executions (such being in different JUnit Suites, or being different parameterised runs).
@@ -1738,3 +1742,31 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/TestRun"
+
+  DataTypeAvailability:
+    type: object
+    properties:
+      availability:
+        type: string
+        enum: [
+          "notYetAvailable",
+          "willNeverBeAvailable",
+          "isAvailable"
+        ]
+      availableSince:
+        type: string
+        format: date-time
+      detail:
+        description: Only present for willNeverBeAvailable, gives more detail on why the data is not going to be available
+        $ref: "#/definitions/NoDataAvailable"
+
+  AvailableData:
+   type: object
+   properties:
+     coverage:
+       $ref: "#/definitions/DataTypeAvailability"
+     testResults:
+       $ref: "#/definitions/DataTypeAvailability"
+     perTestCoverage:
+       $ref: "#/definitions/DataTypeAvailability"
+
