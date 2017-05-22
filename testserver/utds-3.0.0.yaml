@@ -1687,6 +1687,27 @@ definitions:
             type: integer
             format: int32
 
+  TestCaseExecutionAttributes:
+    type: object
+    properties:
+      outcome:
+        type: string
+        enum: [
+          "success",
+          "failure",
+          "error",
+          "skipped"
+          ]
+      durationMs:
+        type: integer
+        format: int32
+
+  TestCaseExecutionData:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TestCaseIdentityData"
+      - $ref: "#/definitions/TestCaseExecutionAttributes"
+
   TestRunBaseAttributes:
     type: object
     properties:
@@ -1817,6 +1838,22 @@ definitions:
           type: string
           description: Insight specific key/value pairs. The keys for this map must be in the list of TestInsight.properties. The values must be strings.
 
+  TestInsightResultAppliesTo:
+    type: object
+    properties:
+      testSuiteId:
+        type: integer
+        format: int32
+        description: Present only for insights on TestSuite
+      testCaseId:
+        type: integer
+        format: int32
+        description: Present for insights on TestCase and in combination with testRunId for insights on TestCaseExecution
+      testRunId:
+        type: integer
+        format: int32
+        description: Present for insights on TestRun and in combination with testCaseId for insights on TestCaseExecution
+
   TestInsightResult:
     type: object
     allOf:
@@ -1896,6 +1933,55 @@ definitions:
             type: boolean
             description: Whether the insight is currently active
 
+  Submission:
+    type: object
+    properties:
+      sourceId:
+        description: The id of the submitter. Must have permission to submit the included data types.
+        type: integer
+      dataTypes:
+        description: The data types that will be fully recorded as part of this submission
+        type: array
+        items:
+          $ref: "#/definitions/DataType"
+      originDetails:
+        description: Unstructured text describing the source of the data (e.g. fed from CI System by feed X version Y. Does not need to include CI system identifiers for the TestRun as these are recorded on TestRun.originDetails.
+        type: string
+
+  SubmissionProgress:
+    type: object
+    properties:
+      percentComplete:
+        type: integer
+        format: int32
+      message:
+        type: string
+
+  SubmissionStatus:
+    type: object
+    allOf:
+      - $ref: "#/definitions/Submission"
+      - $ref: "#/definitions/SubmissionProgress"
+      - properties:
+          submissionId:
+            $ref: "#/definitions/SubmissionId"            
+          status:
+            type: string
+            enum: [
+              "started",
+              "inProgress",
+              "succeeded",
+              "failed",
+              "aborted",
+              "timedOut"
+              ]
+          started:
+            type: string
+            format: date-time
+          updated:
+            type: string
+            format: date-time
+
 # UTDS reusable parameters:
 # ------------------------
 parameters:
@@ -1903,6 +1989,13 @@ parameters:
     name: testrun_id
     in: path
     description: Unique identifier for the Test Run
+    type: integer
+    format: int32
+    required: true
+  submission_id:
+    name: submission_id
+    in: path
+    description: Unique identifier for the data submission
     type: integer
     format: int32
     required: true
