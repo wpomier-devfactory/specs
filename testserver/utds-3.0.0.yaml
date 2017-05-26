@@ -28,8 +28,6 @@ info:
     * UTDS-1.5    - Data Loaders for Additional Language
       * M1 - Create Cobertura Coverage Loader
         * https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg
-
-
 basePath: /ts-utds/v3.0
 consumes:
  - application/json
