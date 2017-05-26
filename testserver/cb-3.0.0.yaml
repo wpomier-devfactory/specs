@@ -54,7 +54,7 @@ paths:
           description: The path of the file in the repo of this product version
           required: false
           type: string
-      
+
       summary: Get a list of the impact to test results of this revision on source files
       description: |
         `@specs CB 1.0 M??`
@@ -122,7 +122,7 @@ definitions:
       coveredChangedLines:
         type: integer
         description: The number of changed lines which were covered by the test run    
-  
+
   SourceFileTestImpact:
     type: object
     properties:
@@ -149,7 +149,6 @@ definitions:
       changedLineMask:
         type: string
         description: A string of 0s and 1s with one character per line of the file, with 1s indicating lines which were changed.
-      
 
 parameters:
   rev:

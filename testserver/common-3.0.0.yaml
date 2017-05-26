@@ -211,7 +211,6 @@ definitions:
     description: DevFactory unique ID for this product version
     type: integer
 
-
   ErrorResponse:
     type: object
     properties:

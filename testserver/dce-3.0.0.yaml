@@ -33,7 +33,7 @@ paths:
         - $ref: "dce-common-3.0.0.yaml#/parameters/code_group_attributes"
       summary: Get a coverage summary based on code filters, optionally grouped by a set of code attributes.
       description: |
-        `@specs DCE-1.0 M2`
+        `@specs [[DCE-1.0 M2|http://google.com]] [DCE-1.0 M2](http://google.com) link:http://google.com[DCE-1.0 M2]`
       responses:
         200:
           description: OK
@@ -86,7 +86,7 @@ paths:
       summary: Get a coverage map based on code filters.
       description: |
         Get a coverage map based on code filters. Packages will be hierarchical. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
-        
+
         `@specs DCE-1.0 M5`
       responses:
         200:
