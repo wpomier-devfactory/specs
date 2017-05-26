@@ -6,7 +6,9 @@ info:
   version: "3.0.0"
   title: |
     # Dynamic Coverage Engine API
+
     description...
+    
     ## Releases and Milestones
     * CCS-1.0
       * M1 - Create a basic Code Coverage Service from the EasyCover backend 
