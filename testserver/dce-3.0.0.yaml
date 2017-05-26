@@ -4,10 +4,8 @@ swagger: '2.0'
 # ---------------------------
 info:
   version: "3.0.0"
-  title: |
-    ## Dynamic Coverage Engine API
-
-    description...
+  title: Dynamic Coverage Engine API
+  description: |
     
     ## Releases and Milestones
     * CCS-1.0
