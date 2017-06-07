@@ -21,7 +21,7 @@ tags:
 paths:
   /productversions/{product_version_id}/commits/{rev}/testimpacts/:
     parameters:
-      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
       - $ref: "#/parameters/rev"
     get:
       tags:
@@ -41,14 +41,14 @@ paths:
 
   /productversions/{product_version_id}/commits/{rev}/sourcefiletestimpacts/: 
     parameters:
-      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
       - $ref: "#/parameters/rev"
     get:
       tags:
         - per-commit
       parameters:
-        - $ref: "common-3.0.0.yaml#/parameters/paging_page"
-        - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
+        - $ref: "./common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "./common-3.0.0.yaml#/parameters/paging_per_page"
         - in: query
           name: scm_path
           description: The path of the file in the repo of this product version

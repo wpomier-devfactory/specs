@@ -23,14 +23,14 @@ tags:
 paths:
   /productversions/{product_version_id}/coveragesummary/:
     parameters:
-      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       tags:
         - sync
       parameters:
-        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
-        - $ref: "dce-common-3.0.0.yaml#/parameters/code_group_attributes"
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_group_attributes"
       summary: Get a coverage summary based on code filters, optionally grouped by a set of code attributes.
       description: |
         `@specs DCE-1.0 M2`
@@ -48,13 +48,13 @@ paths:
 
   /productversions/{product_version_id}/sourcefilecoverage/:
     parameters:
-      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       tags:
         - sync
       parameters:
-        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get per-sourcefile coverage based on code filters. 
       description: |
         Get per-sourcefile coverage based on code filters. The SourceFileCoverage object will include a codeAttributes object for the attributes in the filter.
@@ -76,13 +76,13 @@ paths:
 
   /productversions/{product_version_id}/coveragemap/:
     parameters:
-      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       tags:
         - sync
       parameters:
-        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get a coverage map based on code filters.
       description: |
         Get a coverage map based on code filters. Packages will be hierarchical. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
@@ -102,13 +102,13 @@ paths:
 
   /productversions/{product_version_id}/asynccoveragemap/:
     parameters:
-      - $ref: "common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
 
     get:
       tags:
         - async
       parameters:
-        - $ref: "dce-common-3.0.0.yaml#/parameters/code_filter"
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
       summary: Get a coverage map based on code filters, returning a query ID which can be used to fetch the results incrementally
       description: |
         `@specs DCE-1.0 M6`
