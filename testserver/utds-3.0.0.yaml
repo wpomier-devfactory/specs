@@ -14,11 +14,11 @@ info:
     | CCS-1.2 | M1 | [Add Test Results (TestCase, TestCaseExecution)](https://drive.google.com/open?id=1RC6uWOgXegkYvAyJ2TkCp3WyMQSUNdNFcCzodsMJs90) |
     |         | M2 | [Add Test Insights](https://docs.google.com/a/devfactory.com/document/d/1Vz-H-I9Fwo1NyLbiWrCti4W50_9gyiCK218ZgxQXsQU/edit?usp=sharing) |
     |         | M3 | [Add XUnit Test Results Submission](https://drive.google.com/open?id=1WLhAwzqXoqigynQmAzm0KzCp0NmCPblalf8V0--eFkc) |
-    | UTDS-1.4|    | *Hierarchical Packages* |
+    | UTDS-1.4 *Hierarchical Packages*|    |  |
     |         | M1 | [Update Read APIs](https://drive.google.com/open?id=13v3FuQg3NA8a-PdRpfF8qmj-pwB1pLRWp4zaEWGZ3z0) |
     |         | M2 | [Update Write APIs](https://drive.google.com/open?id=1oq5CPrbfpegxD_VzvxXT1v1Vgei4LGR6okNmyYNtr-U) |
     |         | M3 | [Update Workers](https://drive.google.com/open?id=1lGYCHcYPIixLLYPG6bq4kgti3MPMsdLPuCfP6cUfUTM) |
-    | UTDS-1.5|    | *Data Loaders for Additional Language*
+    | UTDS-1.5 Data Loaders for Additional Language|    | 
     |         | E1 | [Support repo changing for a product version](https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw) |
     |         | M1 | [Create Cobertura Coverage Loader](https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg) |
 basePath: /ts-utds/v3.0
