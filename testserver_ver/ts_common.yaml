@@ -1,0 +1,215 @@
+swagger: '2.0'
+
+# TestServer Error Object definitions
+info:
+  version: "3.0.0"
+  title: TestServer Global Parameters/Definitions/Responses
+
+# TestServer Global Model
+# -----------------------
+definitions:
+
+  CoverageMetric:
+    type: object
+    properties:
+      coverable:
+        type: integer
+        format: int32
+        description: The number of measured items that could be covered
+      covered:
+        type: integer
+        format: int32
+        description: The number of measured items that were covered
+
+  CoverableObject:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: Where this coverage data relates to a node in the coverage tree, this is the ID of that node. Otherwise (e.g. for a grouped coverage summary) this field will be null.
+      name:
+        type: string
+      totalLines:
+        type: integer
+        format: int32
+        description: Total number of lines across all source files, including comments and whitespace, that relate to this coverage node. In the case of filtered/grouped queries it will be the number of such lines that meet the filter/group conditions.
+      lineCoverage:
+        $ref: "#/definitions/CoverageMetric"
+      methodCoverage:
+        $ref: "#/definitions/CoverageMetric"
+
+  TestRunCoverageBulk:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      packages:
+        description: The top level packages in this TestRun. In a hierarchical representation it will just be the top level ones (e.g. "com")
+        type: array
+        items:
+          $ref: "#/definitions/PackageCoverageBulk"
+      sourceFiles:
+        type: array
+        items:
+          $ref: "#/definitions/SourceFileCoverage"
+
+  SourceFileCoverage:
+    type: object
+    properties:
+      sourceFileCoverageId:
+        type: integer
+        format: int32
+        description: An ID for this source file which is unique within this test run
+      dfScmUrl:
+        $ref: "#/definitions/DfScmUrl"
+      totalLines:
+        type: integer
+        format: int32
+        description: Total number of lines in the file including comments and whitespace
+      coverableLines:
+        type: integer
+        format: int32
+        description: The number of lines in the file which resulted in executable code and therefore could be covered by a test
+      coveredLines:
+        type: integer
+        format: int32
+        description: The number of lines in the file which were covered by a test
+      perLineCoverage:
+        type: string
+        description: The coverage status of each line in the file represented by one character for each line - N = not coverable, X = coverable but not covered, C = (coverable and) covered, F = excluded by code filter (only used for some APIs)
+      codeAttributes:
+        type: object
+        description: Container for the values of the Code Attributes that were filtered on. Only present for APIs with a filter. If more than one value exists for the attribute on the file then the "largest" in the direction of the comparison operator will be used.
+        additionalProperties:
+          type: string
+          description: Code Attributes
+
+  PackageCoverageBulk:
+    type: object
+    properties:
+      parentPackage:
+        description: The parent of this package if the package representation is hierarchical. Null (or not present) if the package has no parent or if the package representation in use is flattened
+        type: integer
+        format: int32
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      classes:
+        type: array
+        items:
+          $ref: "#/definitions/ClassCoverageBulk"
+      packages:
+        description: Only present for a hierarchical package representation when it will contain the immediate child packages of this package
+        type: array
+        items:
+          $ref: "#/definitions/PackageCoverageBulk"
+
+  ClassCoverageBulk:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      methods:
+        type: array
+        items:
+          $ref: "#/definitions/MethodCoverage"
+      sourceFragments:
+        type: array
+        items:
+          $ref: "#/definitions/SourceFragment"
+
+  MethodCoverage:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      sourceFragments:
+        type: array
+        items:
+          $ref: "#/definitions/SourceFragment"
+
+  SourceFragment:
+    type: object
+    description: A section of source code
+    properties:
+      dfScmUrl:
+        $ref: "#/definitions/DfScmUrl"
+      startLine:
+        type: integer
+        description: if not present then the fragment starts at line 1
+      endLine:
+        type: integer
+        description: if not present then the fragment ends on at the end of the source file
+
+  TestRunCoverage:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      packages:
+        description: The top level packages in this TestRun. In a hierarchical representation it will just be the top level ones (e.g. "com")
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+
+  PackageCoverage:
+    type: object
+    properties:
+      parentPackage:
+        description: The parent of this package if the package representation is hierarchical. Null (or not present) if the package has no parent or if the package representation in use is flattened
+        type: integer
+        format: int32
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      classes:
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+      packages:
+        description: Only present for a hierarchical package representation when it will contain the immediate child packages of this package
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+
+  ClassCoverage:
+    type: object
+    properties:
+      coverage:
+        $ref: "#/definitions/CoverableObject"
+      methods:
+        type: array
+        items:
+          $ref: "#/definitions/CoverableObject"
+      sourceFragments:
+        type: array
+        items:
+          $ref: "#/definitions/SourceFragment"
+
+  TestRunSummaryData:
+    type: object
+    properties:
+      coverableLines:
+        type: integer
+        description: The total number of coverable lines of code for this test run
+      coveredLines:
+        type: integer
+        description: The total number of lines covered by this test run
+      totalLines:
+        type: integer
+        description: The total number of lines present in the source code for this test run
+      testCases:
+        type: integer
+        description: The total number of test cases present in this test run
+      failedTestCases:
+        type: integer
+        description: The number of test cases which failed in this test run
+
+# TestServer Global Parameters
+# ----------------------------
+parameters:
+  product_version_id:
+    name: product_version_id
+    in: path
+    description: Common product version ID
+    type: integer
+    required: true

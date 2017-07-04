@@ -1,0 +1,65 @@
+swagger: '2.0'
+
+# DevFactory definitions
+info:
+  version: "3.0.0"
+  title: DevFactory Global Parameters/Definitions/Responses
+
+# DevFactory Global Model
+# -----------------------
+definitions:
+  DfScmUrl:
+    type: string
+    description: The DF SCM URL of this revision of the source file as defined by CodeServer
+
+  ProductVersionId:
+    description: DevFactory unique ID for this product version
+    type: integer
+
+  ErrorResponse:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: "#/definitions/Error"
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        description: A brief message describing the general nature of the error, for example Invalid Attribute
+        type: string
+      detail:
+        description: Detail specific to this occurrence of the error, e.g. Test Suite ID not valid.
+        type: string
+
+# DevFactory Global Parameters
+# ----------------------------
+parameters:
+  paging_page:
+    name: page
+    in: query
+    description: page number for an API that supports pagination
+    type: integer
+    format: int32
+  paging_per_page:
+    name: per_page
+    in: query
+    description: number of items on a page for an API that supports pagination
+    type: integer
+    format: int32
+
+# DevFactory Global Responses
+# ---------------------------
+responses:
+  UnexpectedError:
+    description: Unexpected Error
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  BadRequest:
+    description: Bad Request
+    schema:
+      $ref: "#/definitions/ErrorResponse"
