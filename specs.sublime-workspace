@@ -520,7 +520,10 @@
 	"buffers":
 	[
 		{
+			"contents": "",
 			"file": "testserver/cb/3.0.yaml",
+			"file_size": -1,
+			"file_write_time": -1,
 			"settings":
 			{
 				"buffer_size": 0,
@@ -531,8 +534,57 @@
 			"file": "testserver/utds-3.0.0.yaml",
 			"settings":
 			{
-				"buffer_size": 71951,
+				"buffer_size": 72243,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/wpomier/Documents/devfactory/dailyjournal.txt",
+			"settings":
+			{
+				"buffer_size": 103904,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/tmp/1",
+			"settings":
+			{
+				"buffer_size": 26932,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/coverage.xml",
+			"settings":
+			{
+				"buffer_size": 1326754,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/IDs.txt",
+			"settings":
+			{
+				"buffer_size": 359,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/bulk-response.json",
+			"settings":
+			{
+				"buffer_size": 1444637,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "h3. Observations\n* The xUnit files loading into UTDS wasn't showed as asked.\n* The comparison between cobertura xml file and html output (16:20@video) was unnecessary, because these two files (xml and html) were generated with the external simplecov tool and we don't need to validate it.\n* I didn't mentioned in the spec, but a better comparison could be between perLine coverage string against the colored html file.\n* The comparison I mentioned in the spec, was referring to compare the coverage values {coverable, covered and total lines} between html (simplecov output) and /bulk (output of our brand new cobertura loader).\n* Nevertheless none of the above points was a reject cause.\nh3. Error found\n* Look at this analysis of spree/core bulk json result with the file {{spec/dummy/app/controllers/application_controller.rb}} made with node tool:\n{code:javascript}\n$ node\n> r=require('/home/wpomier/utds/demo/1.5-M2/spree/core/bulk-response.json');\n> map_pkg = {}; map_cls = {};\n> function map(p){ map_pkg[p.coverage.id] = {name: p.coverage.name, parentPackage: p.parentPackage}; if(p.packages) p.packages.forEach(p=>map(p));if(p.classes) p.classes.forEach(c=>map_cls[c.coverage.id]={package:p.coverage.id, name:c.coverage.name, dfScmUrl: c.sourceFragments[0].dfScmUrl});}\n> map(r.coverage)\n> map_cls[56]\n{ package: 54,\n  name: 'application_controller',\n  dfScmUrl: 'https://github.com/spree/spree/api&rev=32112&path=spec/dummy/app/controllers/application_controller.rb' }\n> map_pkg[54]\n{ name: 'controllers', parentPackage: 12 }\n> map_pkg[12]\n{ name: 'app', parentPackage: 1 }\n> map_pkg[1]\n{ name: 'Ungrouped', parentPackage: null }\n// Let's find all the 'app' package ids:\n> for(id in map_pkg) if(map_pkg[id].name == 'app') console.log(id);\n12\n{code}\n* The above code result shows that there is only one {{'app'}} package with id=12.\n* This is wrong: a package name can be duplicated.\n* Let's see the first 5 files of this codebase with a 'app' package somewhere in its structure:\n{code:javascript}\n$ awk '/<package /{p=gensub(/.* name=.([^ ]*). .*/, \"\\\\1\", 1)}/filename=/{f=gensub(/.*filename=.([^ ]*). .*/, \"\\\\1\", 1); print p \">\" f;}' coverage.xml | grep 'app/' | head -5\nControllers>spec/dummy/app/controllers/application_controller.rb\nHelpers>app/helpers/spree/base_helper.rb\nHelpers>app/helpers/spree/products_helper.rb\nHelpers>spec/dummy/app/helpers/application_helper.rb\nMailers>app/mailers/spree/base_mailer.rb\n{code}\n* In this small fileset there are 'app's in  4 different places in their structure. I think you agree with me that each one should have a different id, because it's not the same package \n(Note that the first word on each line is the xml package name)\n* Now this is a reject cause, as this milestone spec explicitly says:\n{panel:title=Milestone User Story}\nEnsure the compatibility of Cobertura Loader with Ruby 1.9+ by testing it against five open source Ruby codebases that use SimpleCov as coverage tool through whether Cucumber or RSpec as test runner, and fixing any possible found issues/bugs.\n...\n*When this milestone is complete we are saying to customers that we will be able to load results from Ruby 1.9+ codebases using SimpleCov through whether Cucumber or RSpec.*\n{panel}\n\nBefore submit this demo again, please try to review any other possible hidden/masked error with the results to acchieve this milestone goal.\n",
+			"settings":
+			{
+				"buffer_size": 3360,
+				"line_ending": "Unix",
+				"name": "h3. Observations"
 			}
 		}
 	],
@@ -560,6 +612,9 @@
 	},
 	"file_history":
 	[
+		"/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/backend/coverage.xml",
+		"/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/gitlab/coverage/coverage.xml",
+		"/home/wpomier/Documents/devfactory/bin/points.sh",
 		"/home/wpomier/Documents/tmp/specs/testserver/ts_common/1.0.yaml",
 		"/home/wpomier/Documents/tmp/specs/testserver/cb/3.0.0.yaml",
 		"/home/wpomier/Documents/tmp/specs/testserver/ts_common/3.0.0.yaml",
@@ -615,7 +670,6 @@
 		"/home/wpomier/Documents/specs-swagger/TestServer/TestServer_2.4.0.swagger.yaml",
 		"/home/wpomier/Documents/devfactory/prj/TestServer_2.1.0.swagger.yaml",
 		"/tmp/repo/1",
-		"/home/wpomier/Documents/devfactory/bin/points.sh",
 		"/tmp/specs/testserver/common-3.0.0.yaml",
 		"/tmp/66_20170516T121955.675Z.json",
 		"/home/wpomier/Documents/devfactory/bin/jira_valuable_count.js",
@@ -685,9 +739,7 @@
 		"/home/wpomier/Documents/crossover/prj/00_test/pomier.wilfredo.vcsrest.swagger.yaml",
 		"/home/wpomier/Documents/crossover/prj/01_dynamic_coverage_1.0/demo-revision/M5-notes.txt",
 		"/home/wpomier/Documents/crossover/prj/TestServer 2.0.0.swagger.yaml",
-		"/home/wpomier/personal_docs/brasil/bancos/santander/extratos/cartao_credito/2017/mastercard/201705 (parcial).csv",
-		"/home/wpomier/personal_docs/brasil/bancos/santander/extratos/cartao_credito/2017/mastercard/201704 parcial.csv",
-		"/home/wpomier/personal_docs/brasil/bancos/santander/extratos/cartao_credito/2017/visa/201705 (parcial).csv"
+		"/home/wpomier/personal_docs/brasil/bancos/santander/extratos/cartao_credito/2017/mastercard/201705 (parcial).csv"
 	],
 	"find":
 	{
@@ -705,6 +757,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"map_c",
+			"map_p",
+			"lib/tas",
+			"<package ",
+			"app/",
+			"application_controller",
+			"/pipeline/",
+			"pipeline",
+			"<package",
+			"|         | ",
 			"/$",
 			"/",
 			"../ts_common/3.0.0.yaml#",
@@ -822,17 +884,7 @@
 			"product_version_id",
 			"/productversions/{product_version_id}",
 			"productversions/{product_version_id}",
-			"product_version_id",
-			"SourceFileTestImpact",
-			"SummaryTestImpact",
-			"UniqueTestSuiteId",
-			"testSuiteId:",
-			"productVersionId",
-			"SummaryTestImpact",
-			"/testsuites/",
-			"enum:",
-			"/testsuites/",
-			"coveragemap"
+			"product_version_id"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -855,7 +907,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -891,7 +943,7 @@
 					"file": "testserver/utds-3.0.0.yaml",
 					"settings":
 					{
-						"buffer_size": 71951,
+						"buffer_size": 72243,
 						"regions":
 						{
 							"bookmarks":
@@ -901,8 +953,8 @@
 								"regions":
 								[
 									[
-										3054,
-										3054
+										3346,
+										3346
 									]
 								],
 								"scope": "bookmarks"
@@ -911,8 +963,8 @@
 						"selection":
 						[
 							[
-								3065,
-								3065
+								1567,
+								1567
 							]
 						],
 						"settings":
@@ -921,8 +973,177 @@
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 20.0,
-						"translation.y": 886.0,
+						"translation.x": 36.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/wpomier/Documents/devfactory/dailyjournal.txt",
+					"settings":
+					{
+						"buffer_size": 103904,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								103904,
+								103904
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 36485.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/tmp/1",
+					"settings":
+					{
+						"buffer_size": 26932,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								245,
+								245
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/coverage.xml",
+					"settings":
+					{
+						"buffer_size": 1326754,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								487797,
+								487797
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 138805.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/IDs.txt",
+					"settings":
+					{
+						"buffer_size": 359,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								149,
+								149
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/bulk-response.json",
+					"settings":
+					{
+						"buffer_size": 1444637,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								543347,
+								543347
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 184335.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"settings":
+					{
+						"buffer_size": 3360,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3360,
+								3360
+							]
+						],
+						"settings":
+						{
+							"auto_name": "h3. Observations",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 603.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -947,6 +1168,12 @@
 				0,
 				1,
 				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
 			]
 		],
 		"cols":
@@ -957,6 +1184,7 @@
 		"rows":
 		[
 			0.0,
+			0.5,
 			1.0
 		]
 	},
