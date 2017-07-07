@@ -79,7 +79,7 @@ paths:
         - testsuite
       summary: Create a new Test Suite
       description: |
-        *@specs* [CCS-1.1 M1](https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI), 
+        __@specs__ [CCS-1.1 M1](https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI), 
         [UTDS 1.5 E1](https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw)
       parameters:
         - in: body
