@@ -37,7 +37,7 @@ paths:
         404:
           description: Product Version or Revision Not found
         default:
-          $ref: "../common/1.0.yaml#/responses/UnexpectedError"
+          $ref: "../common/v1.0.yaml#/responses/UnexpectedError"
 
   /productversions/{product_version_id}/commits/{rev}/sourcefiletestimpacts/: 
     parameters:
@@ -67,11 +67,11 @@ paths:
               $ref: "#/definitions/SourceFileTestImpact"
         400:
           # Parameters are not in the right format, or an invalid page was requested.
-          $ref: "../common/1.0.yaml#/responses/BadRequest"
+          $ref: "../common/v1.0.yaml#/responses/BadRequest"
         404:
           description: Product version or Revision Not found
         default:
-          $ref: "../common/1.0.yaml#/responses/UnexpectedError"
+          $ref: "../common/v1.0.yaml#/responses/UnexpectedError"
 
 # CB Model
 # ---------
@@ -81,7 +81,7 @@ definitions:
     type: object
     properties:
       productVersionId:
-        $ref: "../common/1.0.yaml#/definitions/ProductVersionId"
+        $ref: "../common/v1.0.yaml#/definitions/ProductVersionId"
       rev:
         type: string
         description: Revision from SCM system of the revision
@@ -90,10 +90,10 @@ definitions:
         description: Revision from SCM system of the previous revision
       currentResults:
         description: Test and coverage results as of this revision
-        $ref: "../common/1.0.yaml#/definitions/TestRunSummaryData"
+        $ref: "../common/v1.0.yaml#/definitions/TestRunSummaryData"
       previousResults:
         description: Test and coverage results as of the previous revision
-        $ref: "../common/1.0.yaml#/definitions/TestRunSummaryData"
+        $ref: "../common/v1.0.yaml#/definitions/TestRunSummaryData"
       coverageOfChangedLines:
         description: The coverage of the lines which were changed by this revision.
         $ref: "#/definitions/CoverageOfChangedLines"
