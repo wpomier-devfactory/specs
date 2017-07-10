@@ -32,11 +32,11 @@ paths:
        200:
          description: OK
          schema:
-           $ref: "common-3.0.0.yaml#/definitions/TestRunCoverage"
+           $ref: "../common/1.0.yaml#/definitions/TestRunCoverage"
        404:
          description: Query not found
        default:
-         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+         $ref: "../common/1.0.yaml#/responses/UnexpectedError"
 
 
   /queries/{query_id}/coverage/packages/{package_id}:
@@ -58,11 +58,11 @@ paths:
        200:
          description: OK
          schema:
-            $ref: "common-3.0.0.yaml#/definitions/PackageCoverage"
+            $ref: "../common/1.0.yaml#/definitions/PackageCoverage"
        404:
          description: Query or Package not found
        default:
-         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+         $ref: "../common/1.0.yaml#/responses/UnexpectedError"
 
 
   /queries/{query_id}/coverage/classes/{class_id}:
@@ -84,11 +84,11 @@ paths:
        200:
          description: OK
          schema:
-            $ref: "common-3.0.0.yaml#/definitions/ClassCoverage"
+            $ref: "../common/1.0.yaml#/definitions/ClassCoverage"
        404:
          description: Query or Class not found
        default:
-         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+         $ref: "../common/1.0.yaml#/responses/UnexpectedError"
 
 
   /queries/{query_id}/coverage/methods/{method_id}:
@@ -110,18 +110,18 @@ paths:
        200:
          description: OK
          schema:
-            $ref: "common-3.0.0.yaml#/definitions/MethodCoverage"
+            $ref: "../common/1.0.yaml#/definitions/MethodCoverage"
        404:
          description: Query or Method not found
        default:
-         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+         $ref: "../common/1.0.yaml#/responses/UnexpectedError"
 
 
   /queries/{query_id}/coverage/sourcefiles:
     parameters:
       - $ref: "#/parameters/query_id"
-      - $ref: "common-3.0.0.yaml#/parameters/paging_page"
-      - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
+      - $ref: "../common/1.0.yaml#/parameters/paging_page"
+      - $ref: "../common/1.0.yaml#/parameters/paging_per_page"
       - in: query
         name: scm_path
         description: The path of the file in the repo of the queried product version
@@ -145,14 +145,14 @@ paths:
          schema:
           type: array
           items:
-            $ref: "common-3.0.0.yaml#/definitions/SourceFileCoverage"
+            $ref: "../common/1.0.yaml#/definitions/SourceFileCoverage"
        400:
          # Parameters are not in the right format, or an invalid page was requested.
-         $ref: "common-3.0.0.yaml#/responses/BadRequest"
+         $ref: "../common/1.0.yaml#/responses/BadRequest"
        404:
          description: Query not found
        default:
-         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+         $ref: "../common/1.0.yaml#/responses/UnexpectedError"
 
 # Parameters
 # ----------
