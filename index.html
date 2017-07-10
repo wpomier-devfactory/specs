@@ -59,7 +59,7 @@
 				<th>Stage deployment date</th>
 				<th>Production deployment date</th>
 			</tr>
-			<tr ng-repeat-begin="module in system.modules">
+			<tr ng-repeat-start="module in system.modules">
 				<td colspan="3" ng-bind="module.name"></td>
 			</tr>
 			<tr ng-repeat="version in module.versions" class="selectable" ng-click="open(module.abbreviation, version.version)">
