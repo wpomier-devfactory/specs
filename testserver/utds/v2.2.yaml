@@ -7,20 +7,20 @@ info:
   title: Unit Test Data Store (aka CCS) APIs
   description: |
     ## Releases and Milestones
-    Release | Milestone | Description/link
-    ------- | --------- | -----------
-    CCS-1.0 | M1 | [Create a basic Code Coverage Service from the EasyCover backend][1]
-    CCS-1.1 | M1 | [Update existing Code Coverage Service to add linkage to CodeServer and Org/Product/Version hierarchy][2]
-    CCS-1.2 | M1 | [Add Test Results (TestCase, TestCaseExecution)][3]
-            | M2 | [Add Test Insights][4]
-            | M3 | [Add XUnit Test Results Submission][5]
-    UTDS-1.4|    | *Hierarchical Packages*
-            | M1 | [Update Read APIs][6]
-            | M2 | [Update Write APIs][7]
-            | M3 | [Update Workers][8]
-    UTDS-1.5|    | *Data Loaders for Additional Language*
-            | E1 | [Support repo changing for a product version][9]
-            | M1 | [Create Cobertura Coverage Loader][10]
+    | Release | Milestone | Description/link |
+    | ------- | --------- | ----------- |
+    | CCS-1.0 | M1 | [Create a basic Code Coverage Service from the EasyCover backend][1] |
+    | CCS-1.1 | M1 | [Update existing Code Coverage Service to add linkage to CodeServer and Org/Product/Version hierarchy][2] |
+    | CCS-1.2 | M1 | [Add Test Results (TestCase, TestCaseExecution)][3] |
+    |         | M2 | [Add Test Insights][4] |
+    |         | M3 | [Add XUnit Test Results Submission][5] |
+    | UTDS-1.4|    | *Hierarchical Packages* |
+    |         | M1 | [Update Read APIs][6] |
+    |         | M2 | [Update Write APIs][7] |
+    |         | M3 | [Update Workers][8] |
+    | UTDS-1.5|    | *Data Loaders for Additional Language* |
+    |         | E1 | [Support repo changing for a product version][9] |
+    |         | M1 | [Create Cobertura Coverage Loader][10] |
 
     [1]: https://drive.google.com/open?id=1QM0CZRQb35X2PEDnR0MA0UJAdOnhVcJgdVwijvyJDUg
     [2]: https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI
