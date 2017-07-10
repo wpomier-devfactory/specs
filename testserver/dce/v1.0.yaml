@@ -3,10 +3,10 @@ swagger: '2.0'
 # Dynamic Coverage Engine 1.0
 # ---------------------------
 info:
-  version: "3.0.0"
+  version: "1.0"
   title: Dynamic Coverage Engine API
 
-basePath: /ts-dce/v3.0
+basePath: /ts/dce/v1.0
 consumes:
  - application/json
 produces:

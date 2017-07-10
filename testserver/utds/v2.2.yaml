@@ -3,7 +3,7 @@ swagger: '2.0'
 # Unit Test Data Store 1.0
 # ------------------------
 info:
-  version: "3.0.0"
+  version: "2.2"
   title: Unit Test Data Store (aka CCS) APIs
   description: |
     ## Releases and Milestones
@@ -21,7 +21,7 @@ info:
     | UTDS-1.5|    | *Data Loaders for Additional Language* |
     |         | E1 | [Support repo changing for a product version](https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw) |
     |         | M1 | [Create Cobertura Coverage Loader](https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg) |
-basePath: /ts-utds/v3.0
+basePath: /ts/utds/v2.2
 consumes:
  - application/json
 produces:

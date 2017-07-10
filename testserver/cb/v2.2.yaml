@@ -3,10 +3,10 @@ swagger: '2.0'
 # Code Bridge 1.0
 # ---------------
 info:
-  version: "3.0.0"
+  version: "2.2"
   title: Code Bridge API
 
-basePath: /ts-cb/v3.0
+basePath: /ts/cb/v2.2
 consumes:
  - application/json
 produces:
