@@ -9,18 +9,29 @@ info:
     ## Releases and Milestones
     | Release | Milestone | Description/link |
     | ------- | --------- | ----------- |
-    | CCS-1.0 | M1 | [Create a basic Code Coverage Service from the EasyCover backend](https://drive.google.com/open?id=1QM0CZRQb35X2PEDnR0MA0UJAdOnhVcJgdVwijvyJDUg) |
-    | CCS-1.1 | M1 | [Update existing Code Coverage Service to add linkage to CodeServer and Org/Product/Version hierarchy](https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI) |
-    | CCS-1.2 | M1 | [Add Test Results (TestCase, TestCaseExecution)](https://drive.google.com/open?id=1RC6uWOgXegkYvAyJ2TkCp3WyMQSUNdNFcCzodsMJs90) |
-    |         | M2 | [Add Test Insights](https://docs.google.com/a/devfactory.com/document/d/1Vz-H-I9Fwo1NyLbiWrCti4W50_9gyiCK218ZgxQXsQU/edit?usp=sharing) |
-    |         | M3 | [Add XUnit Test Results Submission](https://drive.google.com/open?id=1WLhAwzqXoqigynQmAzm0KzCp0NmCPblalf8V0--eFkc) |
+    | CCS-1.0 | M1 | [Create a basic Code Coverage Service from the EasyCover backend][1] |
+    | CCS-1.1 | M1 | [Update existing Code Coverage Service to add linkage to CodeServer and Org/Product/Version hierarchy][2] |
+    | CCS-1.2 | M1 | [Add Test Results (TestCase, TestCaseExecution)][3] |
+    |         | M2 | [Add Test Insights][4] |
+    |         | M3 | [Add XUnit Test Results Submission][5] |
     | UTDS-1.4|    | *Hierarchical Packages* |
-    |         | M1 | [Update Read APIs](https://drive.google.com/open?id=13v3FuQg3NA8a-PdRpfF8qmj-pwB1pLRWp4zaEWGZ3z0) |
-    |         | M2 | [Update Write APIs](https://drive.google.com/open?id=1oq5CPrbfpegxD_VzvxXT1v1Vgei4LGR6okNmyYNtr-U) |
-    |         | M3 | [Update Workers](https://drive.google.com/open?id=1lGYCHcYPIixLLYPG6bq4kgti3MPMsdLPuCfP6cUfUTM) |
+    |         | M1 | [Update Read APIs][6] |
+    |         | M2 | [Update Write APIs][7] |
+    |         | M3 | [Update Workers][8] |
     | UTDS-1.5|    | *Data Loaders for Additional Language* |
-    |         | E1 | [Support repo changing for a product version](https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw) |
-    |         | M1 | [Create Cobertura Coverage Loader](https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg) |
+    |         | E1 | [Support repo changing for a product version][9] |
+    |         | M1 | [Create Cobertura Coverage Loader][10] |
+
+    [1]: https://drive.google.com/open?id=1QM0CZRQb35X2PEDnR0MA0UJAdOnhVcJgdVwijvyJDUg
+    [2]: https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI
+    [3]: https://drive.google.com/open?id=1RC6uWOgXegkYvAyJ2TkCp3WyMQSUNdNFcCzodsMJs90
+    [4]: https://docs.google.com/a/devfactory.com/document/d/1Vz-H-I9Fwo1NyLbiWrCti4W50_9gyiCK218ZgxQXsQU/edit?usp=sharing
+    [5]: https://drive.google.com/open?id=1WLhAwzqXoqigynQmAzm0KzCp0NmCPblalf8V0--eFkc
+    [6]: https://drive.google.com/open?id=13v3FuQg3NA8a-PdRpfF8qmj-pwB1pLRWp4zaEWGZ3z0
+    [7]: https://drive.google.com/open?id=1oq5CPrbfpegxD_VzvxXT1v1Vgei4LGR6okNmyYNtr-U
+    [8]: https://drive.google.com/open?id=1lGYCHcYPIixLLYPG6bq4kgti3MPMsdLPuCfP6cUfUTM
+    [9]: https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw
+    [10]: https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg
 basePath: /ts/utds/v2.2
 consumes:
  - application/json
@@ -79,8 +90,7 @@ paths:
         - testsuite
       summary: Create a new Test Suite
       description: |
-        __@specs__ [CCS-1.1 M1][1], 
-        [UTDS 1.5 E1][2]
+        __@specs__ [CCS-1.1 M1][1], [UTDS 1.5 E1][2]
 
         [1]: https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI
         [2]: https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw
