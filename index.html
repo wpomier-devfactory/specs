@@ -1,1 +1,101 @@
-Here should appear the list of System APIs
+<html>
+<head>
+	<title>DevFactory API Explorer</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+</head>
+<body>
+	<style type="text/css">
+	* {
+		box-sizing: border-box;
+		font-family: "Helvetica Neue", "Helvetica", "Open Sans", "Arial", "Lucida Grande", "Roboto", "sans-serif"; 
+	}
+	h2{	font-size: 24px; margin-left: 50px; }
+	h3{font-size: 18px; }
+	.banner {
+	    background-color: #89bf04;
+	    padding: 3rem 1.5rem;
+	    margin-bottom: 1rem;
+	    height: 150px;
+	}
+	.banner>div{
+		font-size: 28px;
+		font-weight: bold;
+	    padding: 3rem 1.5rem;
+	    color: #fff;
+	    position: relative;
+	}
+	.banner>div>i{
+	    border-radius: 50px;
+	    display: inline-block;
+	    width: 50px;
+	    height: 50px;
+	    background-color: #547f00;
+	    margin-right: 10px;
+	    top: -8px;
+	    position: relative;
+	    line-height: 46px;
+	    font-style: normal;
+	    text-align: center;
+	    font-size: 22px;
+	}
+	.modules>li{
+		font-size: 18px;
+		color: #333;
+		margin: 50px;
+	}
+	.selectable::hover{
+		background-color: #eee;
+	}
+	</style>
+	<div ng-controller="Main">
+		<div class="banner">
+			<div><i>{...}</i>DevFactory {{system.name}} API explorer</div>
+		</div>
+		<h2>Modules</h2>
+		<table>
+			<tr>
+				<th>Version</th>
+				<th>Stage deployment date</th>
+				<th>Production deployment date</th>
+			</tr>
+			<tr ng-repeat-begin="module in system.modules">
+				<td colspan="3" ng-bind="module.name"></td>
+			</tr>
+			<tr ng-repeat="version in module.versions" class="selectable" ng-click="open(module.abbreviation, version.version)">
+				<td ng-bind="version.version"></td>
+				<td ng-bind="version.stageDate"></td>
+				<td ng-bind="version.prodDate"></td>
+			</tr>
+			<tr ng-repeat-end></tr>
+		</table>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+	<script type="text/javascript">
+		function getParameterByName(name, url) {
+		    if (!url) url = window.location.href;
+		    name = name.replace(/[\[\]]/g, "\\$&");
+		    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		        results = regex.exec(url);
+		    if (!results) return null;
+		    if (!results[2]) return '';
+		    return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+		function Main($scope, $http, $location){
+			$scope.modules = [];
+			$scope.rootdir = getParameterByName("system");
+			$http.get($scope.rootdir+'/system.json').then(function(S){
+				$scope.system = S.data;
+			});
+			$scope.open = function(module, version){
+				lastUrl = $location.url();
+				$location.path($scope.rootdir+'/'+module+'/v'+version+'.yaml');
+				yaml = $location.absUrl();
+				$location.url(lastUrl);
+				$location.path('/ui/index.html');
+				$location.search({yaml: yaml});
+			};
+		}
+	</script>
+</body>
+</html>

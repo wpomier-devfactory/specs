@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"iss",
+				"issues"
+			],
+			[
+				"to",
+				"toLowerCase"
+			],
+			[
+				"sta",
+				"started"
+			],
+			[
+				"field",
+				"fieldMap"
+			],
+			[
 				"wo",
 				"work"
 			],
@@ -162,10 +178,6 @@
 			[
 				"esre",
 				"escrevendo"
-			],
-			[
-				"iss",
-				"issuetype"
 			],
 			[
 				"key",
@@ -502,18 +514,6 @@
 			[
 				"docum",
 				"documento"
-			],
-			[
-				"spec",
-				"SPEC-287"
-			],
-			[
-				"reini",
-				"reiniciar"
-			],
-			[
-				"pap",
-				"Papai"
 			]
 		]
 	},
@@ -531,10 +531,10 @@
 			}
 		},
 		{
-			"file": "testserver/utds-3.0.0.yaml",
+			"contents": "",
 			"settings":
 			{
-				"buffer_size": 72243,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -542,16 +542,17 @@
 			"file": "/home/wpomier/Documents/devfactory/dailyjournal.txt",
 			"settings":
 			{
-				"buffer_size": 103904,
+				"buffer_size": 105002,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/tmp/1",
+			"file": "/pi/pimoney/docs/todo.txt",
 			"settings":
 			{
-				"buffer_size": 26932,
-				"line_ending": "Unix"
+				"buffer_size": 813,
+				"line_ending": "Unix",
+				"name": "TODO"
 			}
 		},
 		{
@@ -571,20 +572,78 @@
 			}
 		},
 		{
-			"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/bulk-response.json",
+			"contents": "",
 			"settings":
 			{
-				"buffer_size": 1444637,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "h3. Observations\n* The xUnit files loading into UTDS wasn't showed as asked.\n* The comparison between cobertura xml file and html output (16:20@video) was unnecessary, because these two files (xml and html) were generated with the external simplecov tool and we don't need to validate it.\n* I didn't mentioned in the spec, but a better comparison could be between perLine coverage string against the colored html file.\n* The comparison I mentioned in the spec, was referring to compare the coverage values {coverable, covered and total lines} between html (simplecov output) and /bulk (output of our brand new cobertura loader).\n* Nevertheless none of the above points was a reject cause.\nh3. Error found\n* Look at this analysis of spree/core bulk json result with the file {{spec/dummy/app/controllers/application_controller.rb}} made with node tool:\n{code:javascript}\n$ node\n> r=require('/home/wpomier/utds/demo/1.5-M2/spree/core/bulk-response.json');\n> map_pkg = {}; map_cls = {};\n> function map(p){ map_pkg[p.coverage.id] = {name: p.coverage.name, parentPackage: p.parentPackage}; if(p.packages) p.packages.forEach(p=>map(p));if(p.classes) p.classes.forEach(c=>map_cls[c.coverage.id]={package:p.coverage.id, name:c.coverage.name, dfScmUrl: c.sourceFragments[0].dfScmUrl});}\n> map(r.coverage)\n> map_cls[56]\n{ package: 54,\n  name: 'application_controller',\n  dfScmUrl: 'https://github.com/spree/spree/api&rev=32112&path=spec/dummy/app/controllers/application_controller.rb' }\n> map_pkg[54]\n{ name: 'controllers', parentPackage: 12 }\n> map_pkg[12]\n{ name: 'app', parentPackage: 1 }\n> map_pkg[1]\n{ name: 'Ungrouped', parentPackage: null }\n// Let's find all the 'app' package ids:\n> for(id in map_pkg) if(map_pkg[id].name == 'app') console.log(id);\n12\n{code}\n* The above code result shows that there is only one {{'app'}} package with id=12.\n* This is wrong: a package name can be duplicated.\n* Let's see the first 5 files of this codebase with a 'app' package somewhere in its structure:\n{code:javascript}\n$ awk '/<package /{p=gensub(/.* name=.([^ ]*). .*/, \"\\\\1\", 1)}/filename=/{f=gensub(/.*filename=.([^ ]*). .*/, \"\\\\1\", 1); print p \">\" f;}' coverage.xml | grep 'app/' | head -5\nControllers>spec/dummy/app/controllers/application_controller.rb\nHelpers>app/helpers/spree/base_helper.rb\nHelpers>app/helpers/spree/products_helper.rb\nHelpers>spec/dummy/app/helpers/application_helper.rb\nMailers>app/mailers/spree/base_mailer.rb\n{code}\n* In this small fileset there are 'app's in  4 different places in their structure. I think you agree with me that each one should have a different id, because it's not the same package \n(Note that the first word on each line is the xml package name)\n* Now this is a reject cause, as this milestone spec explicitly says:\n{panel:title=Milestone User Story}\nEnsure the compatibility of Cobertura Loader with Ruby 1.9+ by testing it against five open source Ruby codebases that use SimpleCov as coverage tool through whether Cucumber or RSpec as test runner, and fixing any possible found issues/bugs.\n...\n*When this milestone is complete we are saying to customers that we will be able to load results from Ruby 1.9+ codebases using SimpleCov through whether Cucumber or RSpec.*\n{panel}\n\nBefore submit this demo again, please try to review any other possible hidden/masked error with the results to acchieve this milestone goal.\n",
+			"file": "/home/wpomier/Documents/devfactory/prj/codeserver-2.6.2.swagger.yml",
 			"settings":
 			{
-				"buffer_size": 3360,
-				"line_ending": "Unix",
-				"name": "h3. Observations"
+				"buffer_size": 87733,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/wpomier/Documents/devfactory/prj/TestServer_2.4.0.swagger.yaml",
+			"settings":
+			{
+				"buffer_size": 92791,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "swagger: '2.0'\n\n# Unit Test Data Store 1.0\n# ------------------------\ninfo:\n  version: \"3.0.0\"\n  title: Unit Test Data Store (aka CCS) APIs\n  description: |\n    ## Releases and Milestones\n    * CCS-1.0\n      * M1 - Create a basic Code Coverage Service from the EasyCover backend \n        * https://drive.google.com/open?id=1QM0CZRQb35X2PEDnR0MA0UJAdOnhVcJgdVwijvyJDUg\n    * CCS-1.1 - \n      * M1 - Update existing Code Coverage Service to add linkage to CodeServer and Org/Product/Version hierarchy\n        * https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI\n    * CCS-1.2\n      * M1 - Add Test Results (TestCase, TestCaseExecution)\n        * https://drive.google.com/open?id=1RC6uWOgXegkYvAyJ2TkCp3WyMQSUNdNFcCzodsMJs90\n      * M2 - Add Test Insights\n        * https://docs.google.com/a/devfactory.com/document/d/1Vz-H-I9Fwo1NyLbiWrCti4W50_9gyiCK218ZgxQXsQU/edit?usp=sharing\n      * M3 - Add XUnit Test Results Submission\n        * https://drive.google.com/open?id=1WLhAwzqXoqigynQmAzm0KzCp0NmCPblalf8V0--eFkc\n    * UTDS-1.4    - Hierarchical Packages\n      * M1 - Update Read APIs\n        * https://drive.google.com/open?id=13v3FuQg3NA8a-PdRpfF8qmj-pwB1pLRWp4zaEWGZ3z0\n      * M2 - Update Write APIs\n        * https://drive.google.com/open?id=1oq5CPrbfpegxD_VzvxXT1v1Vgei4LGR6okNmyYNtr-U\n      * M3 - Update Workers\n        * https://drive.google.com/open?id=1lGYCHcYPIixLLYPG6bq4kgti3MPMsdLPuCfP6cUfUTM\n    * UTDS-1.5    - Data Loaders for Additional Language\n      * M1 - Create Cobertura Coverage Loader\n        * https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg\nbasePath: /ts-utds/v3.0\nconsumes:\n - application/json\nproduces:\n - application/json\n\ntags:\n  - name: testsuites\n    description: Test Suite APIs\n  - name: testruns\n    description: Test Run APIs\n  - name: coverages\n    description: Test Run Coverage APIs\n  - name: apps\n    description: Code Insight APIs\n  - name: testcases\n    description: Test Case APIs\n  - name: submits\n    description: Submition applies\n  - name: loaders\n    description: Loaders APIs\n  - name: readers\n    description: Read APIs\n  - name: writers\n    description: Write APIs\n\n# UTDS APIs\n# ---------\npaths:\n  /health:\n    get:\n      description: |\n        Gets a `Health` object describing the state\n        of the system\n      responses:\n        200:\n          description: Successful response\n          schema:\n            title: Health\n            type: object\n            properties:\n              is_healthy:\n                type: boolean\n              user_message:\n                type: string\n                description: An (e.g. error) message suitable for display to end user.\n              internal_message:\n                type: string\n                description: Internal details to help diagnose any issues.\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testsuites:\n    post:\n      tags: \n        - testsuites\n      summary: Create a new Test Suite\n      description: |\n        `@specs CCS-1.1 M1, UTDS 1.5 E1`\n      parameters:\n        - in: body\n          name: body\n          description: Test Suite\n          required: true\n          schema:\n            $ref: \"#/definitions/TestSuiteData\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestSuite\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n    get:\n      tags:\n        - testsuites\n      summary: Find Test Suites\n      description: |\n        `@specs CCS-1.1 M1, CCS-1.3 M1, UTDS 1.5 E1`\n      parameters:\n        - in: query\n          name: scm_repo_url\n          description: URL of the SCM Repo as modeled in CodeServer\n          required: false\n          type: string\n        - in: query\n          name: scm_repo_id\n          description: CodeServer ID for the SCM Repo\n          required: false\n          type: integer\n        - in: query\n          name: product_version_id\n          description: DevFactory unique product version ID\n          required: false\n          type: integer      \n        - in: query\n          name: product_version_ids\n          description: A csv of DevFactory unique product version IDs\n          required: false\n          type: array\n          items:\n            type: integer\n            collectionFormat: csv\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestSuite\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testsuites/{testsuite_id}:\n    parameters:\n      - in: path\n        name: testsuite_id\n        required: true\n        type: integer\n    get:\n      tags:\n        - testsuites\n      summary: Get a Test Suite from its unique ID\n      description: |\n        `@specs CCS-1.1 M1`\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestSuite\"\n        404:\n          description: Not found if no TestSuite is found with that ID\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testsuites/{testsuite_id}/testcases:\n    parameters:\n      - in: path\n        name: testsuite_id\n        required: true\n        type: integer\n    get:\n      tags:\n        - testsuites\n        - testcases\n      summary: Find TestCases for a TestSuite\n      description: |\n        `@specs CCS-1.2 M1`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: fq_class\n          description: Fully qualified name of the test class\n          required: false\n          type: string\n        - in: query\n          name: name\n          description: Test case name (e.g. method name)\n          required: false\n          type: string\n        - in: query\n          name: executed_since\n          description: Return only test cases which have been executed since (>=) the specified time\n          required: false\n          type: string\n          format: date-time\n        - in: query\n          name: executed_since_testrun_id\n          description: Return only test cases which have been executed since (>=) the specified test run id\n          required: false\n          type: integer\n          format: int32\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestCase\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: Not found if no TestSuite is found with that ID\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns:\n    post:\n      tags:\n        - testruns\n      summary: Create a Test Run\n      description: |\n        `@specs CCS-1.1 M1`\n      parameters:\n        - in: body\n          name: body\n          required: true\n          schema:\n            $ref: \"#/definitions/TestRunData\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestRun\"\n        400:\n          description: \n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n    get:\n      tags:\n        - testruns\n      summary: Find Test Runs (paged API following usual paging scheme)\n      description: |\n        `@specs CCS-1.1 M1, CCS-1.2 M2, CCS-1.3 M1`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: test_suite_id\n          description: Test Suite ID the test run is for\n          required: false\n          type: integer\n        - in: query\n          name: test_suite_ids\n          description: A csv of Test Suite IDs that the Test Runs should be for\n          required: false\n          type: array\n          items:\n            type: integer\n            collectionFormat: csv\n        - in: query\n          name: test_run_ids\n          description: A csv of Test Run IDs to return\n          required: false\n          type: array\n          items:\n            type: integer\n            collectionFormat: csv\n        - in: query\n          name: scm_revision\n          required: false\n          type: string\n        - in: query\n          name: build_id\n          required: false\n          type: integer\n        - in: query\n          name: executed_since\n          description: Filter to test runs where execution started on or after the specified datetime\n          required: false\n          type: string\n          format: date-time\n        - in: query\n          name: added_since\n          description: Filter to test runs which were added to the Unit Test Data Store strictly after the specified datetime\n          required: false\n          type: string\n          format: date-time\n        - in: query\n          name: scm_repo_url\n          description: Filter to test runs for a test suite with this repo URL (exact match only, use CodeServer if you want to find repos based on wildcards)\n          required: false\n          type: string\n        - in: query\n          name: scm_repo_id\n          description: Filter to test runs for a test suite with this CodeServer repo ID\n          required: false\n          type: integer\n        - in: query\n          name: only_newest_per_test_suite\n          description: If true then return only the newest (most recent execution start time) test run for each test suite (subject to the other filters)\n          required: false\n          type: boolean\n        - in: query\n          name: required_data_type\n          description: Return only test runs which have all the specified data types available\n          type: array\n          items:\n            type: string\n            # NB: this should match #/definitions/DataType, but I can't\n            # get Swagger to accept a $ref here\n            enum: [\n              \"coverage\",\n              \"testResults\",\n              \"perTestCoverage\"\n            ]\n          collectionFormat: multi\n        - in: query\n          name: data_available_since\n          description: Return only test runs which have had the requested data available since this date-time. Has no effect if no required_data_types were specified. It is an error to specify a time in the future.\n          type: string\n          format: date-time\n        - in: query\n          name: insight_filter\n          description: A filter specifying an insight result that must exist and match for this test run. Multiple values of this param will be ANDed together. Each value should be of the form (insight.name,propertyname,=,expected_value). E.g. \"(myapp.scores.somescore,thevalue,=,123)\". For insights that are associated with objects other than the TestRun itself (e.g. with associated TestCaseExecutions) there must be at least one associated object of that type which has an insight result matching. Where there is more than one filter for the same type of object they will be considered independently. For example a TestRun would be included for filterA and filterB if a TestCaseExecution exists that matches filterA and a (could be a different) TestCaseExecution exists for filterB.\n          type: array\n          items:\n            type: string\n          collectionFormat: multi\n\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            $ref: \"#/definitions/TestRuns\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}:\n    parameters:\n      - in: path\n        name: testrun_id\n        type: integer\n        required: true\n    get:\n      tags:\n        - testruns\n      summary: Get a specific Test Run\n      description: |\n        `@specs CCS-1.1 M1`\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestRun\"\n        404:\n          description: No TestRun found with that ID\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/summary:\n    get:\n      tags:\n        - testruns\n      summary: Find Test Runs and return a summary of them. This is similar to GET /testruns, but returns summary data, as well as the basic test run information\n      description: |\n        `@specs CCS-1.3 M1`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: test_suite_ids\n          description: A csv of Test Suite IDs that the Test Runs should be for\n          required: false\n          type: array\n          items:\n            type: integer\n            collectionFormat: csv\n        - in: query\n          name: test_run_ids\n          description: A csv of Test Run IDs to return\n          required: false\n          type: array\n          items:\n            type: integer\n            collectionFormat: csv\n        - in: query\n          name: executed_since\n          description: Filter to test runs where execution started on or after the specified datetime\n          required: false\n          type: string\n          format: date-time\n        - in: query\n          name: added_since\n          description: Filter to test runs which were added to the Unit Test Data Store strictly after the specified datetime\n          required: false\n          type: string\n          format: date-time\n        - in: query\n          name: scm_repo_url\n          description: Filter to test runs for a test suite with this repo URL (exact match only, use CodeServer if you want to find repos based on wildcards)\n          required: false\n          type: string\n        - in: query\n          name: scm_repo_id\n          description: Filter to test runs for a test suite with this CodeServer repo ID\n          required: false\n          type: integer\n        - in: query\n          name: only_newest_per_test_suite\n          description: If true then return only the newest (most recent execution start time) test run for each test suite (subject to the other filters)\n          required: false\n          type: boolean\n        - in: query\n          name: required_data_type\n          description: Return only test runs which have all the specified data types available\n          type: array\n          items:\n            type: string\n            # NB: this should match #/definitions/DataType, but I can't\n            # get Swagger to accept a $ref here\n            enum: [\n              \"coverage\",\n              \"testResults\",\n              \"perTestCoverage\"\n            ]\n          collectionFormat: multi\n        - in: query\n          name: data_available_since\n          description: Return only test runs which have had the requested data available since this date-time. Has no effect if no required_data_types were specified. It is an error to specify a time in the future.\n          type: string\n          format: date-time\n        - in: query\n          name: insight_filter\n          description: A filter specifying an insight result that must exist and match for this test run. Multiple values of this param will be ANDed together. Each value should be of the form (insight.name,propertyname,=,expected_value). E.g. \"(myapp.scores.somescore,thevalue,=,123)\". For insights that are associated with objects other than the TestRun itself (e.g. with associated TestCaseExecutions) there must be at least one associated object of that type which has an insight result matching. Where there is more than one filter for the same type of object they will be considered independently. For example a TestRun would be included for filterA and filterB if a TestCaseExecution exists that matches filterA and a (could be a different) TestCaseExecution exists for filterB.\n          type: array\n          items:\n            type: string\n          collectionFormat: multi\n\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestRunSummaryDataWithContext\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/getorcreate:\n    post:\n      tags:\n        - testruns\n      summary: Given details describing both Test Suite and Test Run, either find and return an existing test run ID, or create a new Test Run and/or Test Suite with those details.\n      description: |\n        `@specs CCS-1.1 M1, UTDS 1.5 E1`\n      parameters:\n        - in: body\n          name: body\n          required: true\n          schema:\n            $ref: \"#/definitions/TestSuiteAndTestRunData\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestRun\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n    get:\n      tags:\n        - testruns\n        - coverages\n      summary: Top-level summary of coverage for a test run\n      description: |\n        `@specs CCS-1.1 M1`\n      responses:\n       200:\n         description: OK\n         schema:\n           $ref: \"common-3.0.0.yaml#/definitions/TestRunCoverage\"\n       404:\n         description: Could not find TestRun, or there is no Coverage data for this test run\n       default:\n         $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/packages/{package_id}:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - name: package_id\n        in: path\n        description: Unique identifier for the package\n        type: integer\n        format: int32\n        required: true\n\n    get:\n      tags:\n        - testruns\n        - coverages\n      summary: Coverage of a package and a list of coverage for the classes it contains. In the current release packages will be flattened.\n      description: |\n        `@specs CCS-1.1 M1`\n      responses:\n       200:\n         description: OK\n         schema:\n          type: array\n          items:\n            $ref: \"common-3.0.0.yaml#/definitions/PackageCoverage\"\n       404:\n         description: Could not find Coverage for this test run and package (the TestRun does not exist, or it has no coverage, or it has coverage but the specified package does not exist)\n       default:\n         $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/classes/{class_id}:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - name: class_id\n        in: path\n        description: Unique identifier for the class\n        type: integer\n        format: int32\n        required: true\n\n    get:\n      tags:\n        - testruns\n        - coverages\n      summary: Coverage of a class and a list of coverage for the methods it contains\n      description: |\n        `@specs CCS-1.1 M1`\n      responses:\n       200:\n         description: OK\n         schema:\n          type: array\n          items:\n            $ref: \"common-3.0.0.yaml#/definitions/ClassCoverage\"\n       404:\n         description: Could not find Coverage for this test run and class (the TestRun does not exist, or it has no coverage, or it has coverage but the specified class does not exist)\n         $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/methods/{method_id}:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - name: method_id\n        in: path\n        description: Unique identifier for the method\n        type: integer\n        format: int32\n        required: true\n\n    get:\n      tags:\n        - testruns\n        - coverages\n      summary: Coverage of a method\n      description: |\n        `@specs CCS-1.1 M1`\n      responses:\n       200:\n         description: OK\n         schema:\n          type: array\n          items:\n            $ref: \"common-3.0.0.yaml#/definitions/MethodCoverage\"\n       404:\n         description: Could not find Coverage for this test run and method (the TestRun does not exist, or it has no coverage, or it has coverage but the specified method does not exist)\n       default:\n         $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/sourcefiles:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n      - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n      - in: query\n        name: scm_path\n        description: The path of the file in the repo of this test run\n        required: false\n        type: string\n      - in: query\n        name: df_scm_url\n        description: The full DF SCM Url of the file\n        required: false\n        type: string\n\n    get:\n      tags:\n        - testruns\n        - coverages\n      summary: List of source files for this test run.\n      description: |\n        List of source files for this test run which meet the query params, along with their coverage. This API supports pagination, following the model described at https://developer.github.com/guides/traversing-with-pagination\n\n        `@specs CCS-1.1 M1`\n      responses:\n       200:\n         description: OK. Array will be empty if there were no matches for the filter params.\n         schema:\n          type: array\n          items:\n            $ref: \"common-3.0.0.yaml#/definitions/SourceFileCoverage\"\n       400:\n         description: Parameters are not in the right format, or an invalid page was requested.\n         $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n       404:\n         description: Could not find TestRun, or there is no Coverage data for this test run\n       default:\n         $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/testresults:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n    get:\n      tags:\n        - testruns\n      summary: Get the test results (Test Case Executions) for a given test run\n      description: |\n        `@specs CCS-1.2 M1`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n      responses:\n       200:\n         description: OK. Array will be empty if TestResult data exists for this TestRun, but there were no tests executed.\n         schema:\n            $ref: \"#/definitions/TestRunResults\"\n       400:\n         description: Parameters are not in the right format, or an invalid page was requested.\n         $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n       404:\n         description: Could not find Test Results for this test run (either the TestRun does not exist, or no TestResult data is available for it)\n       default:\n         $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testcases/{testcase_id}/testresults:\n    parameters:\n      - in: path\n        name: testcase_id\n        required: true\n        type: integer\n    get:\n      tags:\n        - testcases\n      summary: Find TestCaseExecutions for a TestCase \n      description: |\n        `@specs CCS-1.2 M1`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: executed_since\n          description: Return only executions in TestRuns executed since (>=) the specified time\n          required: false\n          type: string\n          format: date-time\n        - in: query\n          name: executed_since_testrun_id\n          description: Return only executions in TestRuns executed since (>=) the specified test run id\n          required: false\n          type: integer\n          format: int32\n        - in: query\n          name: outcome\n          description: Return only test runs which had the specified outcomes (default is any outcome)\n          type: array\n          items:\n            type: string\n            enum: [\n              \"success\",\n              \"failure\",\n              \"error\",\n              \"skipped\"\n            ]\n          collectionFormat: multi\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            $ref: \"#/definitions/TestRunResultsWithTestRun\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestCase not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n###### Coverage Submission Feed APIs ######\n\n  /testruns/{testrun_id}/coverage/jacoco:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - coverages\n        - loaders\n      summary: Submit coverage for a test run based on Jacoco data\n      parameters:\n        - in: body\n          name: body\n          description: Jacoco coverage artifacts specification\n          required: true\n          schema:\n            $ref: \"#/definitions/JacocoArtifactSpecification\"\n      responses:\n        202:\n          description: Accepted\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        400:\n          description: Bad Request\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/dotcover:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    post:\n      tags:\n        - testruns\n        - coverages\n        - submits\n        - loaders\n      summary: Submit coverage for a test run based on DotCover data\n      parameters:\n        - in: body\n          name: body\n          description: DotCover coverage artifacts specification\n          required: true\n          schema:\n            $ref: \"#/definitions/DotCoverArtifactSpecification\"\n      responses:\n        202:\n          description: Accepted\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        400:\n          description: Bad Request\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/opencover:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    post:\n      tags:\n        - testruns\n        - coverages\n        - submits\n        - loaders\n      summary: Submit coverage for a test run based on OpenCover data\n      parameters:\n        - in: body\n          name: body\n          description: OpenCover coverage artifacts specification\n          required: true\n          schema:\n            $ref: \"#/definitions/OpenCoverArtifactSpecification\"\n      responses:\n        202:\n          description: Accepted\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        400:\n          description: Bad Request\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/testresults/xunit:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    post:\n      tags:\n        - testruns\n        - coverages\n        - submits\n        - loaders\n      summary: Submit Test Results for a test run based on XUnit data\n      description: |\n        `@specs CCS-1.2 M3`\n      parameters:\n        - in: body\n          name: body\n          description: XUnit test results artifacts specification\n          required: true\n          schema:\n            $ref: \"#/definitions/XUnitArtifactSpecification\"\n      responses:\n        202:\n          description: Accepted\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        400:\n          description: Bad Request\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/cobertura:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    post:\n      tags:\n        - testruns\n        - coverages\n        - submits\n        - loaders\n      summary: Submit coverage for a test run based on Cobertura data\n      description: |\n        `@specs UTDS-1.5 M1`\n      parameters:\n        - in: body\n          name: body\n          description: Cobertura coverage artifacts specification\n          required: true\n          schema:\n            $ref: \"#/definitions/CoberturaArtifactSpecification\"\n      responses:\n        202:\n          description: Accepted\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        400:\n          description: Bad Request\n          schema:\n            $ref: \"#/definitions/ArtifactSubmissionStatus\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/nodata:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    post:\n      tags:\n        - testruns\n        - loaders\n        - submits\n      summary: Record that a type of data is not (and will not) be available for this test run\n      parameters:\n        - in: body\n          name: body\n          description: Detail of why there is no data\n          required: true\n          schema:\n            $ref: \"#/definitions/NoDataAvailable\"\n      responses:\n        200:\n          description: Success\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n\n    get:\n      tags:\n        - testruns\n        - submits\n      summary: Get all data submissions for a test run (list will be empty if there are none)\n      description: |\n        `@specs CCS-1.3 M1`\n      responses:\n        200:\n          description: Success\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/SubmissionStatus\"\n        400:\n          description: Bad Request\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n      summary: Start a new data submission for the specified types of data. Only those types of data will be able to be stored during the submission. Data will not be available to read APIs until the submission is completed. Once a submission for a given data type has been completed no further data of that type can be submitted.\n      description: |\n        `@specs ...`\n      parameters:\n        - in: body\n          name: body\n          description: Data Submission\n          required: true\n          schema:\n            $ref: \"#/definitions/Submission\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/SubmissionStatus\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    get:\n      tags:\n        - testruns\n        - submits\n      summary: Get the current status of a data submission\n      description: |\n        `@specs ...`\n      responses:\n        200:\n          description: Success\n          schema:\n            $ref: \"#/definitions/SubmissionStatus\"\n        400:\n          description: Bad Request\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/coveragenodes:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Provide CoverageNode data for this Test Run as part of this submission\n      description: |\n        `@specs UTDS-1.4 M2`\n      parameters:\n        - in: body\n          name: body\n          description: Coverage Node Data\n          required: true\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/CoverageNodeData\"\n      responses:\n        200:\n          description: OK\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/sourcefilecoverage:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Provide SourceFileCoverage data for this Test Run as part of this submission\n      parameters:\n        - in: body\n          name: body\n          description: Source File Coverage Data\n          required: true\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/SourceFileCoverageData\"\n      responses:\n        200:\n          description: OK\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/sourcefragments:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Provide SourceFragment data for this Test Run as part of this submission\n      parameters:\n        - in: body\n          name: body\n          description: Source Fragment Data\n          required: true\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/SourceFragmentData\"\n      responses:\n        200:\n          description: OK\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/testresults:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Add Test Case Executions to a test run data submission\n      description: |\n        `@specs CCS-1.2 M1`\n      parameters:\n        - in: body\n          name: body\n          required: true\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestCaseExecutionData\"\n      responses:\n        200:\n          description: OK\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestCaseExecution\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/progress:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Update the progress information for a submission which is in progress\n      parameters:\n        - in: body\n          name: body\n          description: Progress info\n          required: true\n          schema:\n            $ref: \"#/definitions/SubmissionProgress\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/SubmissionStatus\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/complete:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Complete (commit) the submission\n      description: |\n        `@specs UTDS-1.4 M2`\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/SubmissionStatus\"\n        400:\n          description: The request could not be completed, including if the data sent during the submission had integrity issues and failed validation, in which case the submission will be set to a failed status.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/submissions/{submission_id}/abort:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - $ref: \"#/parameters/submission_id\"\n\n    post:\n      tags:\n        - testruns\n        - submits\n        - writers\n      summary: Abort (roll back) the submission\n      description: |\n        `@specs CCS-1.3 M1`\n      parameters:\n        - in: body\n          name: body\n          description: A final indication of how far the submission had got and the reason for aborting\n          required: true\n          schema:\n            $ref: \"#/definitions/SubmissionProgress\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/SubmissionStatus\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/coverage/submission/{artifact_submission_id}:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - in: path\n        name: artifact_submission_id\n        description: Unique ID for the artifact submission returned when the submission was made\n        required: true\n        type: string\n\n    get:\n      tags:\n        - testruns\n        - submits\n      summary: Get the status of this artifact submission. Once this API has been called and returned a final status (SUCCESS or FAILURE) once then subsequent calls may return code 400. In addition after a reasonable period (e.g. 1 hour) from submission the call may return code 400.\n      responses:\n        200:\n          description: Success\n        400:\n         description: Bad Request\n        404:\n          description: TestRun or Artifact Submission not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/bulk:\n    parameters:\n      - in: path\n        name: testrun_id\n        type: integer\n        required: true\n      - in: query\n        name: include_data\n        description: Controls what data should be populated at the top level of the resulting structure. Keys for data not included will be missing from the result object. If no instances of this parameter are specified then the full data structure will be populated.\n        type: array\n        items:\n          type: string\n          enum: [\n            \"test_run\",\n            \"coverage\",\n            \"test_results\"\n          ]\n        collectionFormat: multi\n      - in: query\n        name: coverage_depth\n        description: Controls what level of coverage depth in the hierarchy testrun->package->class->method is populated in the resulting structure. The specified value is the last level that will be populated. Has no effect if include_data does not include coverage. Default is method (i.e. full hierarchy).\n        type: string\n        enum: [\n          \"testrun\",\n          \"package\",\n          \"class\",\n          \"method\"\n        ]\n      - in: query\n        name: coverage_source_files\n        description: Controls whether the source_files collection of the coverage data is present. Has no effect if include_data does not include coverage.\n        type: boolean\n        default: true\n      - in: query\n        name: coverage_source_fragments\n        description: Controls whether the sourceFragments collections are present for class and method coverage. Has no effect if class or method coverage is not included.\n        type: boolean    \n        default: true\n    get:\n      tags:\n        - testruns\n        - readers\n      summary: Get bulk data for a specific Test Run. In the current release packages will be flattened.\n      description: |\n        `@specs CCS-1.2 M1, UTDS-1.4 M1`\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestRunBulkData\"\n        400:\n          description: Parameters are not in the right format.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun Not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /app/{app_id}/testinsights:\n    parameters:\n      - in: path\n        name: app_id\n        type: integer\n        format: int32\n        description: The app ID as registered with CodeServer\n        required: true\n\n    get:\n      tags:\n        - apps\n      summary: Find test insights that an app produces\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - in: query\n          name: effective_date\n          description: Find test insights which were active at this time rather than now\n          type: string\n          format: date-time\n\n      responses:\n        200:\n          description: OK. Returns empty list if there are no insights found for the app (either the app id does not exist, or there are no insights for it)\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsight\"\n        400:\n          # Parameters are not in the right format.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n    post:\n      tags:\n        - apps\n      summary: Register a new insight that this app can produce\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - in: body\n          name: body\n          required: true\n          schema:\n            $ref: \"#/definitions/TestInsightData\"\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestInsight\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: App Not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /app/{app_id}/testinsights/{insight_id}:\n    parameters:\n      - in: path\n        name: app_id\n        type: integer\n        format: int32\n        description: The app ID as registered with CodeServer\n        required: true\n      - in: path\n        name: insight_id\n        type: integer\n        format: int32\n        required: true\n\n    get:\n      tags:\n        - apps\n      summary: Get a test insight\n      description: |\n        `@specs CCS-1.2 M2`\n      responses:\n        200:\n          description: OK\n          schema:\n            $ref: \"#/definitions/TestInsight\"\n        404:\n          description: App or Insight not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n    delete:\n      tags:\n        - apps\n      summary: End date this test insight to make it inactive. Existing insight results for it will still be available but new insight results will not be allowed.\n      description: |\n        `@specs CCS-1.2 M2`\n      responses:\n        200: \n          description: OK\n          schema:\n            $ref: \"#/definitions/TestInsight\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: App or Insight not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /app/{app_id}/testinsights/{insight_id}/results:\n    parameters:\n      - in: path\n        name: app_id\n        type: integer\n        format: int32\n        description: The app ID as registered with CodeServer\n        required: true\n      - in: path\n        name: insight_id\n        type: integer\n        format: int32\n        required: true\n\n    post:\n      tags:\n        - apps\n      summary: Record new insight results for this insight\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - in: body\n          name: body\n          required: true\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsightResultData\"\n      responses:\n        200:\n          description: OK\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsightResult\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: App or Insight not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /app/{app_id}/testinsights/{insight_id}/results/{insightresult_id}:\n    parameters:\n      - in: path\n        name: app_id\n        type: integer\n        format: int32\n        description: The app ID as registered with CodeServer\n        required: true\n      - in: path\n        name: insight_id\n        type: integer\n        format: int32\n        required: true\n      - in: path\n        name: insightresult_id\n        type: integer\n        format: int32\n        required: true\n\n    delete:\n      tags:\n        - apps\n      summary: End date this test insight result to make it inactive.\n      description: |\n        `@specs CCS-1.2 M2`\n      responses:\n        200: \n          description: OK\n          schema:\n            $ref: \"#/definitions/TestInsightResult\"\n        400:\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: App, Insight, or InsightResult not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testsuites/{testsuite_id}/testinsightresults:\n    parameters:\n      - in: path\n        name: testsuite_id\n        required: true\n        type: integer\n    get:\n      tags:\n        - apps\n        - testsuites\n      summary: Find test insight results for a TestSuite (includes only active results, not deleted)\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: app_id\n          type: integer\n          format: int32\n        - in: query\n          name: insight_id\n          type: integer\n          format: int32\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsightResult\"\n        404:\n          description: TestSuite Not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/testinsightresults:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n    get:\n      tags:\n        - apps\n        - testruns\n      summary: Find test insight results for a TestRun (includes only active results, not deleted)\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: app_id\n          type: integer\n          format: int32\n        - in: query\n          name: insight_id\n          type: integer\n          format: int32\n        - in: query\n          name: indirect_association\n          type: boolean\n          default: false\n          description: Whether to include test insight results that relate indirectly to this TestRun, for example any associated with the TestSuite of this TestRun, with its TestCaseExecutions, or their TestCases\n      responses:\n        200:\n          description: OK\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsightResult\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: Not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testcases/{testcase_id}/testinsightresults:\n    parameters:\n      - in: path\n        name: testcase_id\n        required: true\n        type: integer\n    get:\n      tags:\n        - apps\n        - testcases\n      summary: Find test insight results for a TestCase (includes only active results, not deleted)\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: app_id\n          type: integer\n          format: int32\n        - in: query\n          name: insight_id\n          type: integer\n          format: int32\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsightResult\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestCase not found\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n  /testruns/{testrun_id}/testcases/{testcase_id}/testinsightresults:\n    parameters:\n      - $ref: \"#/parameters/testrun_id\"\n      - in: path\n        name: testcase_id\n        required: true\n        type: integer\n    get:\n      tags:\n        - apps\n        - testruns\n      summary: Find test insight results for a TestCaseExecution (includes only active results, not deleted)\n      description: |\n        `@specs CCS-1.2 M2`\n      parameters:\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_page\"\n        - $ref: \"./common-3.0.0.yaml#/parameters/paging_per_page\"\n        - in: query\n          name: app_id\n          type: integer\n          format: int32\n        - in: query\n          name: insight_id\n          type: integer\n          format: int32\n      responses:\n        200:\n          description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.\n          schema:\n            type: array\n            items:\n              $ref: \"#/definitions/TestInsightResult\"\n        400:\n          description: Parameters are not in the right format, or an invalid page was requested.\n          $ref: \"common-3.0.0.yaml#/responses/BadRequest\"\n        404:\n          description: TestRun or TestCase not found, or TestCase was not executed for this TestRun\n        default:\n          $ref: \"common-3.0.0.yaml#/responses/UnexpectedError\"\n\n# UTDS model\n# ----------\ndefinitions:\n\n  TestSuiteData:\n    type: object\n    properties:\n      productVersionId:\n        $ref: \"common-3.0.0.yaml#/definitions/ProductVersionId\"\n      scmRepoUrl:\n        description: SCM Repo URL including branch, as modeled by CodeServer\n        type: string\n      scmRepoId:\n        description: CodeServer's unique ID for the SCM Repo\n        type: integer\n\n  TestSuite:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestSuiteData\"\n      - properties:\n          testSuiteId:\n            $ref: \"#/definitions/UniqueTestSuiteId\"\n\n  UniqueTestSuiteId:\n    type: integer\n    format: int32\n\n  UniqueTestRunId:\n    type: integer\n    format: int32\n\n  SubmissionId:\n    type: integer\n    format: int32\n\n  ArtifactSubmissionStatus:\n    type: object\n    properties:\n      artifactSubmissionId:\n        description: unique ID for the submission\n        type: string\n      status:\n        type: string\n        enum: [\n          \"accepted\",\n          \"inProgress\",\n          \"success\"\n        ]\n      message:\n        description: detail on the status, e.g. an error message or the current stage of processing\n        type: string\n      percentComplete:\n        description: percentage through processing (as an int 0-100)\n        type: integer\n        format: int32\n\n  TestCaseIdentityData:\n    type: object\n    description: A combination of human-readable fields that uniquely identify the test case within a particular TestSuite (or TestRun). For data submission, if the same test class & name occurs more than once in a single TestRun it it the responsibility of the caller to adjust the name (e.g. a suffix) to ensure it is unique. This is because the caller has any additional context that helps to interpret the difference between the executions (such being in different JUnit Suites, or being different parameterised runs).\n    properties:\n      fqTestClass:\n        type: string\n      testCaseName:\n        type: string\n\n  TestCaseIdentity:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestCaseIdentityData\"\n      - properties:\n          testCaseId:\n            type: integer\n            format: int32\n\n  TestCase:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestCaseIdentity\"\n      - properties:\n          testSuiteId:\n            type: integer\n            format: int32\n          lastTestRunStart:\n            description: The start time of the most recent TestRun in which this test case executed\n            type: string\n            format: date-time\n          lastTestRunId:\n            description: testRunId of the most recent TestRun in which this test csse executed\n            type: integer\n            format: int32\n\n  TestCaseExecutionAttributes:\n    type: object\n    properties:\n      outcome:\n        type: string\n        enum: [\n          \"success\",\n          \"failure\",\n          \"error\",\n          \"skipped\"\n          ]\n      durationMs:\n        type: integer\n        format: int32\n\n  TestCaseExecutionData:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestCaseIdentityData\"\n      - $ref: \"#/definitions/TestCaseExecutionAttributes\"\n\n  TestCaseExecution:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestCaseIdentity\"\n      - $ref: \"#/definitions/TestCaseExecutionAttributes\"\n\n  TestCaseExecutionWithTestRun:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestCaseExecution\"\n      - properties:\n          testRunId:\n            $ref: \"#/definitions/UniqueTestRunId\"\n          testRunExecutionStart:\n            description: datetime of start of test run\n            type: string\n            format: date-time\n\n  TestRunBaseAttributes:\n    type: object\n    properties:\n      scmRevision:\n        type: string\n      buildId:\n        description: Build ID unique within all test runs for this test suite\n        type: integer\n      executionStart:\n        description: datetime of start of test run\n        type: string\n        format: date-time\n      executionEnd:\n        description: datetime of end of test run\n        type: string\n        format: date-time\n      originDetails:\n        description: Unstructured text describing where the test run was performed. The field is not queryable, it is for traceability/logging purposes. It should contain information such as the CI system type & instance.\n        type: string\n\n  TestRunData:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestRunBaseAttributes\"\n      - properties:\n          added:\n            description: datetime of when the test run data was added\n            type: string\n            format: date-time\n          testSuiteId:\n            $ref: \"#/definitions/UniqueTestSuiteId\"\n\n  TestRun:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestRunData\"\n      - properties:\n          testRunId:\n            $ref: \"#/definitions/UniqueTestRunId\"\n          testSuiteId:\n            $ref: \"#/definitions/UniqueTestSuiteId\"\n          availableData:\n            $ref: \"#/definitions/AvailableData\"            \n\n  TestRuns:\n    type: object\n    properties:\n      mostRecentDataAvailable:\n        description: The max of the dataAvailableSince timestamps of the returned TestRuns for the requested required_data_types. This will be used for polling clients to base their next request on to ensure they only get new data. If no required_data_types were specified then it will be null. If no TestRuns were returned it will be the value of data_available_since query param or null if one was not specified.\n        type: string\n        format: date-time\n      testRuns:\n        type: array\n        items:\n          $ref: \"#/definitions/TestRun\"\n\n  DataType:\n    type: string\n    enum: [\n      \"coverage\",\n      \"testResults\",\n      \"perTestCoverage\"\n    ]\n\n  DataTypeAvailability:\n    type: object\n    properties:\n      availability:\n        type: string\n        enum: [\n          \"notYetAvailable\",\n          \"willNeverBeAvailable\",\n          \"isAvailable\"\n        ]\n      availableSince:\n        type: string\n        format: date-time\n      detail:\n        description: Only present for willNeverBeAvailable, gives more detail on why the data is not going to be available\n        $ref: \"#/definitions/NoDataAvailable\"\n\n  AvailableData:\n   type: object\n   properties:\n     coverage:\n       $ref: \"#/definitions/DataTypeAvailability\"\n     testResults:\n       $ref: \"#/definitions/DataTypeAvailability\"\n     perTestCoverage:\n       $ref: \"#/definitions/DataTypeAvailability\"\n\n  NoDataAvailable:\n    type: object\n    properties:\n      data_type:\n        $ref: \"#/definitions/DataType\"\n      reasonCode:\n        description: Reason there is no data\n        type: string\n        enum: [\n          \"noSupportedDataFound\",\n          \"fatalProcessingError\",\n          \"processingTimedOut\",\n          \"manualIssueResolution\",\n          \"other\"\n        ]\n      message:\n        description: Further information on why there is no data\n        type: string\n\n  TestInsightResultData:\n    type: object\n    properties:\n      appliesTo:\n        description: |\n          Which object this test insight result applies to, must be of the type specified on the insight's applicableTo\n        $ref: \"#/definitions/TestInsightResultAppliesTo\"\n      properties:\n        type: object\n        description: Container for the insight-specific properties\n        additionalProperties:\n          type: string\n          description: Insight specific key/value pairs. The keys for this map must be in the list of TestInsight.properties. The values must be strings.\n\n  TestInsightResultAppliesTo:\n    type: object\n    properties:\n      testSuiteId:\n        type: integer\n        format: int32\n        description: Present only for insights on TestSuite\n      testCaseId:\n        type: integer\n        format: int32\n        description: Present for insights on TestCase and in combination with testRunId for insights on TestCaseExecution\n      testRunId:\n        type: integer\n        format: int32\n        description: Present for insights on TestRun and in combination with testCaseId for insights on TestCaseExecution\n\n  TestInsightResult:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestInsightResultData\"\n      - properties:\n          appId:\n            type: integer\n            format: int32\n            description: App ID as registered with CodeServer for the app that produces this insight\n          insightId:\n            type: integer\n            format: int32\n            description: Unique ID of this test insight\n          insightResultId:\n            type: integer\n            format: int32\n            description: Unique ID of this test insight result\n          created:\n            type: string\n            format: date-time\n            description: When the insight result was created\n          deleted:\n            type: string\n            format: date-time\n            description: When the insight result was (soft-) deleted.\n\n  TestInsightData:\n    type: object\n    properties:\n      appId:\n        type: integer\n        format: int32\n        description: App ID as registered with CodeServer for the app that produces this insight\n      name:\n        type: string\n        description: A name for the insight in dotted reverse domain format. For example testsourceanalyser.intent.pureunit. The exact format is for the application to define, however the recommended format is <appname>.<category>.<name>. This facilitates searches for insights from the same app or group of insights. The name should consist of only alphanumeric characters and dots.\n      version:\n        type: string\n        description: An app-specific version string. If an insight is deleted and recreated (e.g. to modify properties) with the same name then the version must be different.\n      displayName:\n        type: string\n        description: A human readable name for the insight\n        maxLength: 128\n      properties:\n        type: array\n        items:\n          type: string\n        description: A list of the custom properties that insight results may store. Each property's name may only contain alphanumeric characters and dots\n      applicableTo:\n        type: string\n        description: Which of the test-related entities the insight applies to\n        enum: [\n          \"testSuite\",\n          \"testRun\",\n          \"testCase\",\n          \"testCaseExecution\"\n          ]\n\n  TestInsight:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestInsightData\"\n      - properties:\n          insightId:\n            type: integer\n            format: int32\n            description: Unique ID of this test insight\n          created:\n            type: string\n            format: date-time\n            description: When the insight was created\n          deleted:\n            type: string\n            format: date-time\n            description: When the insight was (soft-) deleted. The insight is still stored as it may have insight results associated with it, but it is no longer active and no new insight results can be stored against it.\n          isActive:\n            type: boolean\n            description: Whether the insight is currently active\n\n  Submission:\n    type: object\n    properties:\n      sourceId:\n        description: The id of the submitter. Must have permission to submit the included data types.\n        type: integer\n      dataTypes:\n        description: The data types that will be fully recorded as part of this submission\n        type: array\n        items:\n          $ref: \"#/definitions/DataType\"\n      originDetails:\n        description: Unstructured text describing the source of the data (e.g. fed from CI System by feed X version Y. Does not need to include CI system identifiers for the TestRun as these are recorded on TestRun.originDetails.\n        type: string\n\n  SubmissionProgress:\n    type: object\n    properties:\n      percentComplete:\n        type: integer\n        format: int32\n      message:\n        type: string\n\n  SubmissionStatus:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/Submission\"\n      - $ref: \"#/definitions/SubmissionProgress\"\n      - properties:\n          submissionId:\n            $ref: \"#/definitions/SubmissionId\"            \n          status:\n            type: string\n            enum: [\n              \"started\",\n              \"inProgress\",\n              \"succeeded\",\n              \"failed\",\n              \"aborted\",\n              \"timedOut\"\n              ]\n          started:\n            type: string\n            format: date-time\n          updated:\n            type: string\n            format: date-time\n\n  JacocoArtifactSpecification:\n    type: object\n    properties:\n      jacocoExecFilesUris:\n        description: List of URIs of Jacoco exec files\n        type: array\n        items: \n          type: string\n      classPathUris:\n        description: List of URIs (e.g. of zips) of build class files\n        type: array\n        items: \n          type: string\n      sourceFileToDfScmUrlMappingUri:\n        description: URI of a file mapping source file name + package to a DfScmUrl\n        type: string\n\n  OpenCoverArtifactSpecification:\n    type: object\n    properties:\n      openCoverXmlUris:\n        description: List of URIs of OpenCover XML files\n        type: array\n        items: \n          type: string\n      sourceFileToDfScmUrlMappingUri:\n        description: URI of a file mapping source file full path to a DfScmUrl\n        type: string\n\n  DotCoverArtifactSpecification:\n    type: object\n    properties:\n      dotCoverXmlUris:\n        description: List of URIs of DotCover XML files\n        type: array\n        items: \n          type: string\n      sourceFileToDfScmUrlMappingUri:\n        description: URI of a file mapping source file full path to a DfScmUrl\n        type: string\n\n  XUnitArtifactSpecification:\n    type: object\n    properties:\n      xunitXmlUris:\n        description: List of URIs of XUnit XML files\n        type: array\n        items: \n          type: string\n\n  CoberturaArtifactSpecification:\n    type: object\n    properties:\n      coberturaXmlUris:\n        description: List of URIs of Cobertura XML files\n        type: array\n        items: \n          type: string\n      sourceFileToDfScmUrlMappingUri:\n        description: URI of a file mapping source file full path to a DfScmUrl\n        type: string\n\n  CoverageNodeData:\n    type: object\n    required:\n      - coverageNodeId\n      - type\n      - name\n    properties:\n      coverageNodeId:\n        type: integer\n        format: int32\n        description: A unique ID for this coverage node within this test run (allocated by the submitter)\n      parentId:\n        type: integer\n        format: int32\n        description: |\n          The coverageNodeId of the parent node in the coverage hierarchy. The parent node must be included in the same or an earlier coveragenodes submission. The parent must be of the correct type given the type of this node: \n          * testRun node should have no parent (omit the parentId property)\n          * package node must have parent of type testRun or type package\n          * class node must have parent of type package\n          * method node must have parent of type class\n          There must be only one node of type testRun for the entire TestRun\n      type:\n        type: string\n        enum: [\n          \"testRun\",\n          \"package\",\n          \"class\",\n          \"method\"\n          ]\n        description: The type of node being submitted.\n      name:\n        type: string\n        description: The human readable name of this node. This will, for example, be displayed as the caption for a heatmap rectangle representing this code element. The names of children should be unique within a given parent, so for example if there are two methods in a class with the same name it is the responsibility of the caller to make them unique.\n\n  SourceFileCoverageData:\n    type: object\n    required:\n      - sourceFileCoverageId\n      - scmPath\n      - perLineCoverage\n    properties:\n      sourceFileCoverageId:\n        type: integer\n        format: int32\n        description: A unique ID for this source file within this test run (allocated by the submitter)\n      scmPath:\n        type: string\n        description: The path of the source file within the SCM repo (which is specified on the TestSuite to which this TestRun belongs). Should be as it would appear in the scmPath parameter of a DFSCMURL\n      perLineCoverage:\n        type: string\n        description: The coverage status of each line in the file represented by one character for each line - N = not coverable, X = coverable but not covered, C = (coverable and) covered\n\n  SourceFragmentData:\n    type: object\n    required:\n      - sourceFileCoverageId\n      - coverageNodeId\n      - startLine\n      - endLine\n    properties:\n      sourceFileCoverageId:\n        type: integer\n        format: int32\n        description: The unique ID (within this TestRun) of the source file (SourceFileCoverageData) containing the lines of this source fragment. The SourceFileCoverageData for this ID should have already been loaded as part of this submission.\n      coverageNodeId:\n        type: integer\n        format: int32\n        description: The unique ID of the CoverageNode which contains the referenced code\n      startLine:\n        type: integer\n        format: int32\n        description: The line number (1-based) at which the section of code starts\n      endLine:\n        type: integer\n        format: int32\n        description: The line number at which the section of code ends (inclusive)\n\n  TestSuiteAndTestRunData:\n    type: object\n    allOf:\n      - $ref: \"#/definitions/TestSuiteData\"\n      - $ref: \"#/definitions/TestRunBaseAttributes\"\n\n  TestRunResults:\n      type: array\n      items:\n        $ref: \"#/definitions/TestCaseExecution\"\n\n  TestRunBulkData:\n    type: object\n    properties:\n      testRun:\n        $ref: \"#/definitions/TestRun\"\n      coverage:\n        $ref: \"common-3.0.0.yaml#/definitions/TestRunCoverageBulk\"\n      testResults:\n        $ref: \"#/definitions/TestRunResults\"\n\n  TestRunResultsWithTestRun:\n      type: array\n      items:\n        $ref: \"#/definitions/TestCaseExecutionWithTestRun\"\n\n  TestRunSummaryDataWithContext:\n    type: object\n    allOf:\n      - $ref: \"common-3.0.0.yaml#/definitions/TestRunSummaryData\"\n      - properties:\n          testRun:\n            $ref: \"#/definitions/TestRun\"            \n          testSuite:\n            $ref: \"#/definitions/TestSuite\"            \n\n# UTDS reusable parameters:\n# ------------------------\nparameters:\n  testrun_id:\n    name: testrun_id\n    in: path\n    description: Unique identifier for the Test Run\n    type: integer\n    format: int32\n    required: true\n  submission_id:\n    name: submission_id\n    in: path\n    description: Unique identifier for the data submission\n    type: integer\n    format: int32\n    required: true\n",
+			"file": "testserver/utds/3.0.yaml",
+			"file_size": 71955,
+			"file_write_time": 1499400472000000,
+			"settings":
+			{
+				"buffer_size": 71955,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "testserver/utds-3.0.0.yaml",
+			"settings":
+			{
+				"buffer_size": 72244,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "testserver/common-3.0.0.yaml",
+			"settings":
+			{
+				"buffer_size": 8447,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -612,13 +671,19 @@
 	},
 	"file_history":
 	[
+		"/home/wpomier/Documents/tmp/specs/testserver/cb-3.0.0.yaml",
+		"/home/wpomier/Documents/tmp/specs/testserver/utds-3.0.0.yaml",
+		"/home/wpomier/Documents/devfactory/bin/jira_valuable_count.js",
+		"/tmp/1",
+		"/tmp/2",
+		"/home/wpomier/Documents/devfactory/bin/jira.js",
+		"/home/wpomier/Documents/devfactory/bin/points.sh",
+		"/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/bulk-response.json",
 		"/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/backend/coverage.xml",
 		"/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/gitlab/coverage/coverage.xml",
-		"/home/wpomier/Documents/devfactory/bin/points.sh",
 		"/home/wpomier/Documents/tmp/specs/testserver/ts_common/1.0.yaml",
 		"/home/wpomier/Documents/tmp/specs/testserver/cb/3.0.0.yaml",
 		"/home/wpomier/Documents/tmp/specs/testserver/ts_common/3.0.0.yaml",
-		"/home/wpomier/Documents/tmp/specs/testserver/cb-3.0.0.yaml",
 		"/home/wpomier/Documents/tmp/specs/testserver_ver2/cb/3.0.0.yaml",
 		"/home/wpomier/Documents/tmp/specs/testserver_ver/.gitignore",
 		"/home/wpomier/Documents/tmp/specs/testserver_ver/cb.yaml",
@@ -639,7 +704,6 @@
 		"/tmp/typescript-angular2-client/git_push.sh",
 		"/tmp/typescript-angular2-client/configuration.ts",
 		"/home/wpomier/Documents/devfactory/prj/04_smart_code_1.0/demo/M5/git-log-smartcover-demo-files-II.log",
-		"/tmp/1",
 		"/home/wpomier/Documents/devfactory/prj/04_smart_code_1.0/demo/M5/66597_66_20170516T121955.675Z.json",
 		"/tmp/jsonFile.json",
 		"/tmp/sc-m5.js",
@@ -665,14 +729,12 @@
 		"/home/wpomier/.cache/.fr-OM3XcX/typescript-angular2-client/model/BasicAccount.ts",
 		"/home/wpomier/.cache/.fr-i5h9Gu/typescript-angular2-client/model/IdName.ts",
 		"/home/wpomier/.cache/.fr-d89Xdf/typescript-angular2-client/model/BasicAccount.ts",
-		"/tmp/2",
 		"/tmp/accnt.awk",
 		"/home/wpomier/Documents/specs-swagger/TestServer/TestServer_2.4.0.swagger.yaml",
 		"/home/wpomier/Documents/devfactory/prj/TestServer_2.1.0.swagger.yaml",
 		"/tmp/repo/1",
 		"/tmp/specs/testserver/common-3.0.0.yaml",
 		"/tmp/66_20170516T121955.675Z.json",
-		"/home/wpomier/Documents/devfactory/bin/jira_valuable_count.js",
 		"/home/wpomier/personal_docs/arte/poemas/Quando amas de verdade.txt",
 		"/tmp/objects.json",
 		"/home/wpomier/Documents/devfactory/prj/codeserver-2.6.swagger.yml",
@@ -736,10 +798,7 @@
 		"/home/wpomier/.cache/.fr-BoEAPO/LEAO2017/exec.sh",
 		"/home/wpomier/IRPF/LEAO2017/exec.sh",
 		"/tmp/DEMO M5/1_20170109T070607.235Z.json",
-		"/home/wpomier/Documents/crossover/prj/00_test/pomier.wilfredo.vcsrest.swagger.yaml",
-		"/home/wpomier/Documents/crossover/prj/01_dynamic_coverage_1.0/demo-revision/M5-notes.txt",
-		"/home/wpomier/Documents/crossover/prj/TestServer 2.0.0.swagger.yaml",
-		"/home/wpomier/personal_docs/brasil/bancos/santander/extratos/cartao_credito/2017/mastercard/201705 (parcial).csv"
+		"/home/wpomier/Documents/crossover/prj/00_test/pomier.wilfredo.vcsrest.swagger.yaml"
 	],
 	"find":
 	{
@@ -757,6 +816,24 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			" ",
+			"SPEC",
+			"1.5 e1",
+			"@specs",
+			"paging_page:",
+			"writer",
+			"reade",
+			"tags:",
+			"- testcases",
+			"- testcase",
+			"tags:",
+			"- app",
+			"tag",
+			"\\btestsuite\\b",
+			"field",
+			"result.issues",
+			"result",
+			" ",
 			"map_c",
 			"map_p",
 			"lib/tas",
@@ -866,25 +943,7 @@
 			"/insights",
 			"seq",
 			"Sequence",
-			"SequenceNumber",
-			"/objects/",
-			"Repository",
-			"entity",
-			"/coverage",
-			"\"#/parameters/product_version_id\"",
-			"  /productversions/{product_version_id}",
-			"emails",
-			"TestRunCoverageBulk",
-			"sourcefilecoverage",
-			"GroupedCoverageSummary",
-			"java/com/devfactory/testserver/dynamiccoverageengine/",
-			"./dynamic-coverage-engine-",
-			"test_suite_id",
-			"parameters/test_suite_id",
-			"product_version_id",
-			"/productversions/{product_version_id}",
-			"productversions/{product_version_id}",
-			"product_version_id"
+			"SequenceNumber"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -907,7 +966,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -940,40 +999,25 @@
 				},
 				{
 					"buffer": 1,
-					"file": "testserver/utds-3.0.0.yaml",
 					"settings":
 					{
-						"buffer_size": 72243,
+						"buffer_size": 0,
 						"regions":
 						{
-							"bookmarks":
-							{
-								"flags": 144,
-								"icon": "bookmark",
-								"regions":
-								[
-									[
-										3346,
-										3346
-									]
-								],
-								"scope": "bookmarks"
-							}
 						},
 						"selection":
 						[
 							[
-								1567,
-								1567
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/YAML/YAML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_name": "",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
-						"translation.x": 36.0,
+						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
@@ -984,47 +1028,50 @@
 					"file": "/home/wpomier/Documents/devfactory/dailyjournal.txt",
 					"settings":
 					{
-						"buffer_size": 103904,
+						"buffer_size": 105002,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								103904,
-								103904
+								105002,
+								105002
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 8,
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 36485.0,
+						"translation.y": 37236.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "/tmp/1",
+					"file": "/pi/pimoney/docs/todo.txt",
 					"settings":
 					{
-						"buffer_size": 26932,
+						"buffer_size": 813,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								245,
-								245
+								813,
+								813
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"auto_name": "TODO",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 8
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1055,7 +1102,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 138805.0,
+						"translation.y": 3910.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1063,7 +1110,7 @@
 			]
 		},
 		{
-			"selected": 2,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -1096,54 +1143,248 @@
 				},
 				{
 					"buffer": 6,
-					"file": "/home/wpomier/Documents/devfactory/prj/03_unit_test_data_store/release_1.5/Demo/1.5-M2/spree/core/bulk-response.json",
 					"settings":
 					{
-						"buffer_size": 1444637,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								543347,
-								543347
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_name": "",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 184335.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
+					"file": "/home/wpomier/Documents/devfactory/prj/codeserver-2.6.2.swagger.yml",
 					"settings":
 					{
-						"buffer_size": 3360,
+						"buffer_size": 87733,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3360,
-								3360
+								2067,
+								2067
 							]
 						],
 						"settings":
 						{
-							"auto_name": "h3. Observations",
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/home/wpomier/Documents/devfactory/prj/TestServer_2.4.0.swagger.yaml",
+					"settings":
+					{
+						"buffer_size": 92791,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1315,
+								1315
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 603.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "testserver/utds/3.0.yaml",
+					"settings":
+					{
+						"buffer_size": 71955,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								71955,
+								71955
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5109.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "testserver/utds-3.0.0.yaml",
+					"settings":
+					{
+						"buffer_size": 72244,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3586,
+								3586
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 892.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "testserver/common-3.0.0.yaml",
+					"settings":
+					{
+						"buffer_size": 8447,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7778,
+								7778
+							],
+							[
+								8021,
+								8021
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3474.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1184,7 +1425,7 @@
 		"rows":
 		[
 			0.0,
-			0.5,
+			0.457241379311,
 			1.0
 		]
 	},

@@ -1,0 +1,36 @@
+{
+	"name": "TestServer",
+	"modules": [
+		{ 
+			"name": "Dynamic Coverage Engine", 
+			"abbreviation": "dce",
+			"versions": [
+				{ "version": "1.0", "stageDate": "2017-04-01", "prodDate": "2017-04-03" },
+				{ "version": "2.0", "stageDate": "2017-05-09", "prodDate": "2017-05-12" },
+				{ "version": "2.1", "stageDate": "2017-06-12", "prodDate": "2017-06-15" },
+				{ "version": "2.2", "stageDate": "2017-07-09", "prodDate": "" }
+			]
+		},
+		{ 
+			"name": "Dynamic Coverage Engine (Asynchronous)", 
+			"abbreviation": "dceasync",
+			"versions": [
+				{ "version": "2.2", "stageDate": "2017-07-09", "prodDate": "" }
+			]
+		},
+		{ 
+			"name": "Code Bridge", 
+			"abbreviation": "cb",
+			"versions": [
+				{ "version": "2.2", "stageDate": "2017-07-09", "prodDate": "" }
+			]
+		},
+		{ 
+			"name": "Unit Test Data Store", 
+			"abbreviation": "utds",
+			"versions": [
+				{ "version": "2.2", "stageDate": "2017-07-09", "prodDate": "" }
+			]
+		}
+	]
+}
