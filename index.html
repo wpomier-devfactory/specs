@@ -96,7 +96,6 @@
 				$scope.notfound = true;
 			});
 			$scope.open = function(module, version){
-				lastUrl = window.location.href;
 				base = window.location.protocol + '//' + window.location.host + 
 						window.location.pathname.replace(/\/[^\/]*$/, "");
 				yaml = base + '/' + $scope.rootdir+'/'+module+'/v'+version+'.yaml';
