@@ -1,0 +1,165 @@
+swagger: '2.0'
+
+# Dynamic Coverage Engine 1.0
+# ---------------------------
+info:
+  version: "3.0.0"
+  title: Dynamic Coverage Engine Asynchronous APIs
+
+basePath: /ts-dceasync/v3.0
+consumes:
+ - application/json
+produces:
+ - application/json
+
+tags:
+  - name: async
+    description: Asynchronous Query Engine API
+
+# Asynchronous DCE APIs
+# ---------------------
+paths:
+  /queries/{query_id}/coverage:
+    parameters:
+      - $ref: "#/parameters/query_id"
+    get:
+      tags:
+        - async
+      summary: Top-level summary of coverage from a query
+      description: |
+        `@specs DCE-1.0 M6` 
+      responses:
+       200:
+         description: OK
+         schema:
+           $ref: "common-3.0.0.yaml#/definitions/TestRunCoverage"
+       404:
+         description: Query not found
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /queries/{query_id}/coverage/packages/{package_id}:
+    parameters:
+      - $ref: "#/parameters/query_id"
+      - name: package_id
+        in: path
+        description: Unique identifier for the package
+        type: integer
+        format: int32
+        required: true
+    get:
+      tags:
+        - async
+      summary: Coverage of a package and a list of coverage for the classes it contains. Packages will be hierarchical.
+      description: |
+        `@specs DCE-1.0 M6` 
+      responses:
+       200:
+         description: OK
+         schema:
+            $ref: "common-3.0.0.yaml#/definitions/PackageCoverage"
+       404:
+         description: Query or Package not found
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /queries/{query_id}/coverage/classes/{class_id}:
+    parameters:
+      - $ref: "#/parameters/query_id"
+      - name: class_id
+        in: path
+        description: Unique identifier for the class
+        type: integer
+        format: int32
+        required: true
+    get:
+      tags:
+        - async
+      summary: Coverage of a class and a list of coverage for the methods it contains
+      description: |
+        `@specs DCE-1.0 M6` 
+      responses:
+       200:
+         description: OK
+         schema:
+            $ref: "common-3.0.0.yaml#/definitions/ClassCoverage"
+       404:
+         description: Query or Class not found
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /queries/{query_id}/coverage/methods/{method_id}:
+    parameters:
+      - $ref: "#/parameters/query_id"
+      - name: method_id
+        in: path
+        description: Unique identifier for the method
+        type: integer
+        format: int32
+        required: true
+    get:
+      tags:
+        - async
+      summary: Coverage of a method
+      description: |
+        `@specs DCE-1.0 M6` 
+      responses:
+       200:
+         description: OK
+         schema:
+            $ref: "common-3.0.0.yaml#/definitions/MethodCoverage"
+       404:
+         description: Query or Method not found
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+
+  /queries/{query_id}/coverage/sourcefiles:
+    parameters:
+      - $ref: "#/parameters/query_id"
+      - $ref: "common-3.0.0.yaml#/parameters/paging_page"
+      - $ref: "common-3.0.0.yaml#/parameters/paging_per_page"
+      - in: query
+        name: scm_path
+        description: The path of the file in the repo of the queried product version
+        required: false
+        type: string
+      - in: query
+        name: df_scm_url
+        description: The full DF SCM Url of the file
+        required: false
+        type: string
+    get:
+      tags:
+        - async
+      summary: List of source files
+      description: |
+        List of source files for this query result which meet the filter params, along with their coverage. This API supports pagination, following the model described at https://developer.github.com/guides/traversing-with-pagination/. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
+        `@specs DCE-1.0 M6` 
+      responses:
+       200:
+         description: OK. Array will be empty if there were no matches for the filter params, including cases where the specified IDs do not exist.
+         schema:
+          type: array
+          items:
+            $ref: "common-3.0.0.yaml#/definitions/SourceFileCoverage"
+       400:
+         # Parameters are not in the right format, or an invalid page was requested.
+         $ref: "common-3.0.0.yaml#/responses/BadRequest"
+       404:
+         description: Query not found
+       default:
+         $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+# Parameters
+# ----------
+parameters:
+  query_id:
+    name: query_id
+    in: path
+    description: Query ID whose results are required
+    type: string
+    required: true

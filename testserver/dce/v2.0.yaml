@@ -1,0 +1,158 @@
+swagger: '2.0'
+
+# Dynamic Coverage Engine 1.0
+# ---------------------------
+info:
+  version: "3.0.0"
+  title: Dynamic Coverage Engine API
+
+basePath: /ts-dce/v3.0
+consumes:
+ - application/json
+produces:
+ - application/json
+
+tags:
+  - name: sync
+    description: Query Engine APIs
+  - name: async
+    description: Asynchronous Query Engine API
+
+# DCE APIs
+# --------
+paths:
+  /productversions/{product_version_id}/coveragesummary/:
+    parameters:
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
+
+    get:
+      tags:
+        - sync
+      parameters:
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_group_attributes"
+      summary: Get a coverage summary based on code filters, optionally grouped by a set of code attributes.
+      description: |
+        `@specs DCE-1.0 M2`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/GroupedCoverageSummary"
+        400:
+          description: Bad request
+        404:
+          description: No coverage data for this product version
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /productversions/{product_version_id}/sourcefilecoverage/:
+    parameters:
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
+
+    get:
+      tags:
+        - sync
+      parameters:
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
+      summary: Get per-sourcefile coverage based on code filters. 
+      description: |
+        Get per-sourcefile coverage based on code filters. The SourceFileCoverage object will include a codeAttributes object for the attributes in the filter.
+
+        `@specs DCE-1.0 M4`
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "common-3.0.0.yaml#/definitions/SourceFileCoverage"
+        400:
+          description: Bad request
+        404:
+          description: No coverage data for this product version
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /productversions/{product_version_id}/coveragemap/:
+    parameters:
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
+
+    get:
+      tags:
+        - sync
+      parameters:
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
+      summary: Get a coverage map based on code filters.
+      description: |
+        Get a coverage map based on code filters. Packages will be hierarchical. SourceFileCoverage objects will include the codeAttributes object for the filtered attributes.
+
+        `@specs DCE-1.0 M5`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "common-3.0.0.yaml#/definitions/TestRunCoverageBulk"
+        400:
+          description: Bad request
+        404:
+          description: No coverage data for this product version
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /productversions/{product_version_id}/asynccoveragemap/:
+    parameters:
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
+
+    get:
+      tags:
+        - async
+      parameters:
+        - $ref: "./dce-common-3.0.0.yaml#/parameters/code_filter"
+      summary: Get a coverage map based on code filters, returning a query ID which can be used to fetch the results incrementally
+      description: |
+        `@specs DCE-1.0 M6`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/AsyncQueryResponse"
+        400:
+          description: Bad request
+        404:
+          description: No coverage data for this product version
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+# DCE Model
+# ---------
+definitions:
+  GroupedCoverageSummary:
+    type: object
+    properties:
+      totalCoverage:
+        $ref: "common-3.0.0.yaml#/definitions/CoverableObject"
+      groupCoverages:
+        type: array
+        items:
+          $ref: "#/definitions/GroupCoverageSummary"
+
+  GroupCoverageSummary:
+    type: object
+    properties:
+      group_attributes:
+        type: array
+        items: 
+          type: string
+      group_attribute_values:
+        type: array
+        items: 
+          type: string
+      coverage:
+        $ref: "common-3.0.0.yaml#/definitions/CoverableObject"
+
+  AsyncQueryResponse:
+    type: object
+    properties:
+      queryId:
+        type: string

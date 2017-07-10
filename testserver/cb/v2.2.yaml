@@ -1,0 +1,159 @@
+swagger: '2.0'
+
+# Code Bridge 1.0
+# ---------------
+info:
+  version: "3.0.0"
+  title: Code Bridge API
+
+basePath: /ts-cb/v3.0
+consumes:
+ - application/json
+produces:
+ - application/json
+
+tags:
+  - name: per-commit
+    description: Per-commit Query APIs
+
+# DCE APIs
+# --------
+paths:
+  /productversions/{product_version_id}/commits/{rev}/testimpacts/:
+    parameters:
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "#/parameters/rev"
+    get:
+      tags:
+        - per-commit
+      summary: Get a summary of the impact of this commit to test and coverage results
+      description: |     
+        `@specs CB 1.0 M??`
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/SummaryTestImpact"
+        404:
+          description: Product Version or Revision Not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+  /productversions/{product_version_id}/commits/{rev}/sourcefiletestimpacts/: 
+    parameters:
+      - $ref: "./common-3.0.0.yaml#/parameters/product_version_id"
+      - $ref: "#/parameters/rev"
+    get:
+      tags:
+        - per-commit
+      parameters:
+        - $ref: "./common-3.0.0.yaml#/parameters/paging_page"
+        - $ref: "./common-3.0.0.yaml#/parameters/paging_per_page"
+        - in: query
+          name: scm_path
+          description: The path of the file in the repo of this product version
+          required: false
+          type: string
+
+      summary: Get a list of the impact to test results of this revision on source files
+      description: |
+        `@specs CB 1.0 M??`
+      responses:
+        200:
+          description: OK. Array will be empty if there were no matches for the filter params.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SourceFileTestImpact"
+        400:
+          # Parameters are not in the right format, or an invalid page was requested.
+          $ref: "common-3.0.0.yaml#/responses/BadRequest"
+        404:
+          description: Product version or Revision Not found
+        default:
+          $ref: "common-3.0.0.yaml#/responses/UnexpectedError"
+
+# CB Model
+# ---------
+definitions:
+
+  SummaryTestImpact:
+    type: object
+    properties:
+      productVersionId:
+        $ref: "common-3.0.0.yaml#/definitions/ProductVersionId"
+      rev:
+        type: string
+        description: Revision from SCM system of the revision
+      previousRev:
+        type: string
+        description: Revision from SCM system of the previous revision
+      currentResults:
+        description: Test and coverage results as of this revision
+        $ref: "common-3.0.0.yaml#/definitions/TestRunSummaryData"
+      previousResults:
+        description: Test and coverage results as of the previous revision
+        $ref: "common-3.0.0.yaml#/definitions/TestRunSummaryData"
+      coverageOfChangedLines:
+        description: The coverage of the lines which were changed by this revision.
+        $ref: "#/definitions/CoverageOfChangedLines"
+      newlyFailedTests:
+        description: Count of tests which passed on the previous run and failed on this one.
+        type: integer
+      notes:
+        description: Notes about they the results are how they are. For example if there was no TestRun for this rev this might say so and explain that the impact of the commit was included in some other revision's test impact evaluation. If the TestRun for this revision included the changes of multiple commits then this might say so. 
+        type: string
+      relatedRevisions:
+        type: array
+        description: |
+          A list of revisions, in commit order with the oldest first, of revisions which are related to the test impact evaluation of this revision. Intended to be used in combination with the notes field to allow a UI to render links to revisions which the user may wish to refer to in order to understand the test impact evaluation of this revision. For example if there was no TestRun for this rev and the impact was included in some other revision's test impact evaluation then this could specify that revision. If the TestRunfor this revision included the changes of multiple commits then this could list all the revisions included.
+        items:
+          type: string
+
+  CoverageOfChangedLines:
+    type: object
+    properties:
+      totalChangedLines:
+        type: integer
+        description: The number of lines that were changed (note that this may not be the same as the count of lines changed in this single revision if there were multiple revisions between the pair of Test Runs and so the impact of more than one scm revision has been attributed to the impact of this revision)
+      coverableChangedLines:
+        type: integer
+        description: The number of changed lines which were coverable (i.e. had executable code)
+      coveredChangedLines:
+        type: integer
+        description: The number of changed lines which were covered by the test run    
+
+  SourceFileTestImpact:
+    type: object
+    properties:
+      scmPath:
+        type: string
+        description: The path of the source file in the SCM repo
+      testRunIdForSourceFileCoverage:
+        type: integer
+        format: int32
+        description: The ID of the TestRun for which sourceFileCoverageId applies
+      sourceFileCoverageId:
+        type: integer
+        format: int32
+        description: The ID of the source file coverage information used to assess this file (which must be from a test run at the same revision, otherwise line numbers will not be in sync). In particular this will include per-line coverage for the file, showing which lines were coverable and covered.
+      totalChangedLines:
+        type: integer
+        description: The number of lines changed in the file as attributed to this revision (may not match an SCM diff for the file, for example in the case of the impact of other commits being included in the evaluation of this one)
+      coverableChangedLines:
+        type: integer
+        description: The number of changed lines which were coverable
+      coveredChangedLines:
+        type: integer
+        description: The number of changed lines which were covered
+      changedLineMask:
+        type: string
+        description: A string of 0s and 1s with one character per line of the file, with 1s indicating lines which were changed.
+
+parameters:
+  rev:
+    name: rev
+    in: path
+    description: SCM revision as seen in the SCM system (e.g. git hash)
+    type: string
+    required: true

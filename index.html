@@ -93,7 +93,7 @@
 			$scope.open = function(module, version){
 				lastUrl = location.href;
 				base = location.protocol + '//' + location.host + 
-						location.pathname.replace(/\/[^\/]+$/, "");
+						location.pathname.replace(/\/[^\/]*$/, "");
 				yaml = base + '/' + $scope.rootdir+'/'+module+'/v'+version+'.yaml';
 				location = base + '/ui?yaml='+yaml;
 			};
