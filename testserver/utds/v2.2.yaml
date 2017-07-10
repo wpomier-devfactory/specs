@@ -32,7 +32,7 @@ info:
     [8]: https://drive.google.com/open?id=1lGYCHcYPIixLLYPG6bq4kgti3MPMsdLPuCfP6cUfUTM
     [9]: https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw
     [10]: https://drive.google.com/open?id=1OBjQcLupF5GxlaxoQEYeFzDulEb25Bl-7CqdOpKosZg
-basePath: /ts/utds/v2.2
+basePath: /ts/utds/v2
 consumes:
  - application/json
 produces:

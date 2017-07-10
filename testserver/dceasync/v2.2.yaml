@@ -6,7 +6,7 @@ info:
   version: "2.2"
   title: Dynamic Coverage Engine Asynchronous APIs
 
-basePath: /ts/dceasync/v2.2
+basePath: /ts/dceasync/v2
 consumes:
  - application/json
 produces:

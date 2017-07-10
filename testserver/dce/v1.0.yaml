@@ -6,7 +6,7 @@ info:
   version: "1.0"
   title: Dynamic Coverage Engine API
 
-basePath: /ts/dce/v1.0
+basePath: /ts/dce/v1
 consumes:
  - application/json
 produces:
