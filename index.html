@@ -12,6 +12,8 @@
 	}
 	h2{	font-size: 24px; margin-left: 50px; }
 	h3{font-size: 18px; }
+	td,th { padding: 10px; border: 1px solid #000; }
+	th { background-color: #89bf04; color: #fff;}
 	.banner {
 	    background-color: #89bf04;
 	    padding: 3rem 1.5rem;
@@ -44,31 +46,31 @@
 		color: #333;
 		margin: 50px;
 	}
-	.selectable::hover{
-		background-color: #eee;
-	}
+	.selectable{ cursor: pointer;}
+	.selectable:hover{ background-color: #000; }
+	tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
 	<div ng-controller="main">
 		<div class="banner">
 			<div><i>{...}</i>DevFactory {{system.name}} API explorer</div>
 		</div>
 		<h2>Modules</h2>
-		<table>
-			<tr>
-				<th>Version</th>
-				<th>Stage deployment date</th>
-				<th>Production deployment date</th>
-			</tr>
-			<tr ng-repeat-start="module in system.modules">
-				<td colspan="3" ng-bind="module.name"></td>
-			</tr>
-			<tr ng-repeat="version in module.versions" class="selectable" ng-click="open(module.abbreviation, version.version)">
-				<td ng-bind="version.version"></td>
-				<td ng-bind="version.stageDate"></td>
-				<td ng-bind="version.prodDate"></td>
-			</tr>
-			<tr ng-repeat-end></tr>
-		</table>
+		<div ng-repeat="module in system.modules">
+			<h3 ng-bind="module.name"></h3>
+			<table style="border-collapse: collapse; margin-left: 50px">
+				<tr>
+					<th>Version</th>
+					<th>Stage deployment date</th>
+					<th>Production deployment date</th>
+				</tr>
+				<tr ng-repeat="version in module.versions" class="selectable" ng-click="open(module.abbreviation, version.version)">
+					<td ng-bind="version.version"></td>
+					<td ng-bind="version.stageDate"></td>
+					<td ng-bind="version.prodDate"></td>
+				</tr>
+			</table>
+		</div>
+
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
 	<script type="text/javascript">
