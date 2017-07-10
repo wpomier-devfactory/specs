@@ -1,4 +1,4 @@
-<html ng-app>
+<html ng-app="spec">
 <head>
 	<title>DevFactory API Explorer</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +48,7 @@
 		background-color: #eee;
 	}
 	</style>
-	<div ng-controller="Main">
+	<div ng-controller="main">
 		<div class="banner">
 			<div><i>{...}</i>DevFactory {{system.name}} API explorer</div>
 		</div>
@@ -81,7 +81,7 @@
 		    if (!results[2]) return '';
 		    return decodeURIComponent(results[2].replace(/\+/g, " "));
 		}
-		function Main($scope, $http, $location){
+		angular.module('spec', []).controller('main', function($scope, $http, $location){
 			$scope.modules = [];
 			$scope.rootdir = getParameterByName("system");
 			$http.get($scope.rootdir+'/system.json').then(function(S){
@@ -95,7 +95,7 @@
 				$location.path('/ui/index.html');
 				$location.search({yaml: yaml});
 			};
-		}
+		});
 	</script>
 </body>
 </html>
