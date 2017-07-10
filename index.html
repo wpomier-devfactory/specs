@@ -10,10 +10,12 @@
 		box-sizing: border-box;
 		font-family: "Helvetica Neue", "Helvetica", "Open Sans", "Arial", "Lucida Grande", "Roboto", "sans-serif"; 
 	}
-	h2{	font-size: 24px; margin-left: 50px; }
-	h3{font-size: 18px; }
-	td,th { padding: 10px; border: 1px solid #000; }
-	th { background-color: #89bf04; color: #fff;}
+	h2,h3,table{margin-left: 50px }
+	h2{	font-size: 24px }
+	h3{ font-size: 18px }
+	table{ font-size: 12px }
+	td,th { padding: 10px; border: 1px solid #2e6b1a }
+	th { background-color: #89bf04; color: #fff }
 	.banner {
 	    background-color: #89bf04;
 	    padding: 3rem 1.5rem;
@@ -47,7 +49,7 @@
 		margin: 50px;
 	}
 	.selectable{ cursor: pointer;}
-	.selectable:hover{ background-color: #000; }
+	.selectable:hover{ background-color: #a2a2a2; }
 	tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
 	<div ng-controller="main">
@@ -57,7 +59,7 @@
 		<h2>Modules</h2>
 		<div ng-repeat="module in system.modules">
 			<h3 ng-bind="module.name"></h3>
-			<table style="border-collapse: collapse; margin-left: 50px">
+			<table style="border-collapse: collapse">
 				<tr>
 					<th>Version</th>
 					<th>Stage deployment date</th>
@@ -70,7 +72,6 @@
 				</tr>
 			</table>
 		</div>
-
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
 	<script type="text/javascript">
