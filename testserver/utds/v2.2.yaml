@@ -79,8 +79,11 @@ paths:
         - testsuite
       summary: Create a new Test Suite
       description: |
-        __@specs__ [CCS-1.1 M1](https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI), 
-        [UTDS 1.5 E1](https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw)
+        __@specs__ [CCS-1.1 M1][1], 
+        [UTDS 1.5 E1][2]
+
+        [1]: https://drive.google.com/open?id=1ap9nerNrkCXw1heNhnA9ULE3vJMIGXTod-2rhH-qetI
+        [2]: https://drive.google.com/open?id=1Cyf6Nrn50VJVmaJD6xRvcusV6NOVt85N9dJ6UdpZIZw
       parameters:
         - in: body
           name: body
