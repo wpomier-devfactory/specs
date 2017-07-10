@@ -91,12 +91,11 @@
 				$scope.system = S.data;
 			});
 			$scope.open = function(module, version){
-				lastUrl = $location.url();
-				$location.path($scope.rootdir+'/'+module+'/v'+version+'.yaml');
-				yaml = $location.absUrl();
-				$location.url(lastUrl);
-				$location.path('/ui/index.html');
-				$location.search({yaml: yaml});
+				lastUrl = location.href();
+				base = location.protocol + '//' + location.host + 
+						location.pathname.replace(/\/[^\/]+$/, "");
+				yaml = base + '/' + $scope.rootdir+'/'+module+'/v'+version+'.yaml';
+				location = base + '/ui?yaml='+yaml);
 			};
 		});
 	</script>
