@@ -91,7 +91,7 @@
 				$scope.system = S.data;
 			});
 			$scope.open = function(module, version){
-				lastUrl = location.href();
+				lastUrl = location.href;
 				base = location.protocol + '//' + location.host + 
 						location.pathname.replace(/\/[^\/]+$/, "");
 				yaml = base + '/' + $scope.rootdir+'/'+module+'/v'+version+'.yaml';
