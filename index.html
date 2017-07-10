@@ -8,50 +8,24 @@
 </head>
 <body>
 	<style type="text/css">
-	* {
-		box-sizing: border-box;
-		font-family: "Helvetica Neue", "Helvetica", "Open Sans", "Arial", "Lucida Grande", "Roboto", "sans-serif"; 
-	}
-	h2,h3,table{margin-left: 50px }
-	h2{	font-size: 28px }
-	h3{ font-size: 24px }
-	table{ font-size: 12px }
-	td,th { padding: 10px; border: 1px solid #2e6b1a }
-	th { background-color: #89bf04; color: #fff }
-	.banner {
-	    background-color: #89bf04;
-	    padding: 3rem 1.5rem;
-	    margin-bottom: 1rem;
-	    height: 150px;
-	}
-	.banner>div{
-		font-size: 28px;
-		font-weight: bold;
-	    padding: 3rem 1.5rem;
-	    color: #fff;
-	    position: relative;
-	}
-	.banner>div>i{
-	    border-radius: 50px;
-	    display: inline-block;
-	    width: 50px;
-	    height: 50px;
-	    background-color: #547f00;
-	    margin-right: 10px;
-	    top: -8px;
-	    position: relative;
-	    line-height: 46px;
-	    font-style: normal;
-	    text-align: center;
-	    font-size: 22px;
-	}
-	.selectable{ cursor: pointer;}
-	.selectable:hover{ background-color: #a2a2a2; }
-	tr:nth-child(even) {background-color: #f2f2f2;}
+		* { box-sizing: border-box; font-family: "Helvetica Neue", "Helvetica", "Open Sans", "Arial", "Lucida Grande", "Roboto", "sans-serif" }
+		h2,h3,table{margin-left: 50px }
+		h2{	font-size: 28px }
+		h3{ font-size: 24px }
+		table{ font-size: 12px }
+		td,th { padding: 10px; border: 1px solid #2e6b1a }
+		th { background-color: #89bf04; color: #fff }
+		.b {background-color: #89bf04; padding: 3rem 1.5rem; margin-bottom: 1rem; height: 150px }
+		.b>div{font-size: 28px; font-weight: bold; padding: 3rem 1.5rem; color: #fff; position: relative }
+		.b>div>i{border-radius: 50px; display: inline-block; width: 50px; height: 50px; background-color: #547f00; margin-right: 10px; top: -8px; position: relative; line-height: 46px; font-style: normal; text-align: center; font-size: 22px }
+		.b>div>i>i{ top: 2px; position: relative }
+		.selectable{ cursor: pointer }
+		.selectable:hover{ background-color: #a2a2a2 }
+		tr:nth-child(even) {background-color: #f2f2f2 }
 	</style>
 	<div ng-controller="main">
-		<div class="banner">
-			<div><i>{···}</i>DevFactory {{system.name}} API explorer</div>
+		<div class="b">
+			<div><i>{<i>···</i>}</i>DevFactory {{system.name}} API explorer</div>
 		</div>
 		<h3 style="color:red" ng-if="notfound">System not found</h3>
 		<div ng-repeat="module in system.modules">
